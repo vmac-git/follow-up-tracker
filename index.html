@@ -1,525 +1,260 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Follow-up Tracker · Vendas</title>
+<title>Follow-up Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #F7F6F2; --surface: #fff; --border: #E4E2DA;
+  --text: #1A1917; --muted: #7A7872;
+  --accent: #2D6BE4; --accent-light: #EBF1FD;
+  --danger: #D63B3B; --danger-light: #FDF0F0;
+  --warn: #C97820; --warn-light: #FEF5E7;
+  --ok: #1E8A4C; --ok-light: #EBF7F1;
+  --r: 10px; --rs: 6px;
+}
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:14px; line-height:1.6; }
 
-  :root {
-    --bg: #F7F6F2;
-    --surface: #FFFFFF;
-    --border: #E4E2DA;
-    --text: #1A1917;
-    --muted: #7A7872;
-    --accent: #2D6BE4;
-    --accent-light: #EBF1FD;
-    --danger: #D63B3B;
-    --danger-light: #FDF0F0;
-    --warning: #C97820;
-    --warning-light: #FEF5E7;
-    --success: #1E8A4C;
-    --success-light: #EBF7F1;
-    --radius: 10px;
-    --radius-sm: 6px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.08);
-  }
+/* ── Login ── */
+#login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+.login-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:40px 36px; max-width:400px; width:100%; text-align:center; box-shadow:0 2px 16px rgba(0,0,0,0.07); }
+.login-icon { font-size:36px; margin-bottom:16px; }
+.login-title { font-size:22px; font-weight:600; margin-bottom:6px; }
+.login-sub { color:var(--muted); font-size:13px; margin-bottom:28px; line-height:1.6; }
+.lang-row { display:flex; gap:8px; justify-content:center; margin-bottom:24px; }
+.lang-btn { padding:4px 14px; border:1px solid var(--border); border-radius:99px; background:transparent; font-family:inherit; font-size:12px; font-weight:500; cursor:pointer; color:var(--muted); transition:all .12s; }
+.lang-btn.active { background:var(--text); color:#fff; border-color:var(--text); }
+.name-input { width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:var(--rs); font-family:inherit; font-size:15px; background:var(--bg); color:var(--text); outline:none; text-align:center; margin-bottom:12px; transition:border-color .12s; }
+.name-input:focus { border-color:var(--accent); background:var(--surface); }
+.btn-enter { width:100%; padding:11px; border:none; border-radius:var(--rs); background:var(--accent); color:#fff; font-size:14px; font-weight:500; cursor:pointer; font-family:inherit; transition:opacity .15s; }
+.btn-enter:hover { opacity:.88; }
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 14px;
-    line-height: 1.6;
-  }
+/* ── App ── */
+#app { display:none; }
+header { background:var(--surface); border-bottom:1px solid var(--border); padding:0 20px; height:54px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+.logo { font-size:15px; font-weight:600; display:flex; align-items:center; gap:8px; }
+.logo-dot { width:8px; height:8px; border-radius:50%; background:var(--accent); }
+.header-right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.seller-chip { font-size:12px; color:var(--muted); padding:4px 10px; background:var(--bg); border:1px solid var(--border); border-radius:99px; }
+.btn-sm { padding:5px 11px; border:1px solid var(--border); border-radius:var(--rs); background:transparent; font-size:12px; cursor:pointer; font-family:inherit; transition:all .12s; color:var(--muted); }
+.btn-sm:hover { background:var(--bg); color:var(--text); }
+.btn-primary { display:flex; align-items:center; gap:5px; padding:7px 13px; border:none; border-radius:var(--rs); background:var(--accent); color:#fff; font-size:13px; font-weight:500; cursor:pointer; font-family:inherit; transition:opacity .15s; }
+.btn-primary:hover { opacity:.88; }
+.btn-primary:disabled { opacity:.5; cursor:not-allowed; }
 
-  header {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
+main { max-width:1080px; margin:0 auto; padding:20px 16px 80px; }
 
-  .logo {
-    font-size: 15px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text);
-  }
+/* Config banner */
+#cfg-banner { background:#FEF3C7; border:1px solid #F59E0B; border-radius:var(--rs); padding:11px 14px; margin-bottom:16px; font-size:13px; color:#92400E; display:none; }
+#cfg-banner code { background:rgba(0,0,0,.08); padding:1px 5px; border-radius:3px; font-size:11px; }
 
-  .logo-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--accent);
-  }
+/* Sync */
+.sync-row { display:flex; align-items:center; gap:7px; margin-bottom:16px; font-size:12px; color:var(--muted); }
+.sync-dot { width:7px; height:7px; border-radius:50%; background:var(--ok); flex-shrink:0; }
+.sync-dot.busy { background:var(--warn); animation:pulse 1s infinite; }
+.sync-dot.err  { background:var(--danger); }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+/* Stats */
+.stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px; }
+.stat-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:13px 15px; }
+.stat-label { font-size:11px; color:var(--muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:.04em; font-weight:500; }
+.stat-val { font-size:24px; font-weight:600; line-height:1; }
+.c-danger { color:var(--danger); } .c-warn { color:var(--warn); } .c-accent { color:var(--accent); } .c-ok { color:var(--ok); }
 
-  #notif-btn {
-    display: flex; align-items: center; gap: 6px;
-    padding: 6px 12px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: transparent;
-    color: var(--muted);
-    font-size: 13px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: background 0.15s, color 0.15s;
-  }
-  #notif-btn:hover { background: var(--bg); color: var(--text); }
-  #notif-btn.active { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+/* Section */
+.sec-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+.sec-title { font-size:14px; font-weight:600; display:flex; align-items:center; gap:7px; }
+.badge { font-size:11px; font-weight:600; padding:2px 7px; border-radius:99px; }
+.bd { background:var(--danger-light); color:var(--danger); }
+.bw { background:var(--warn-light);   color:var(--warn); }
+.ba { background:var(--accent-light); color:var(--accent); }
+.bs { background:var(--ok-light);     color:var(--ok); }
+.bm { background:#F0EEE8; color:var(--muted); }
 
-  .btn-primary {
-    display: flex; align-items: center; gap: 6px;
-    padding: 7px 14px;
-    border: none;
-    border-radius: var(--radius-sm);
-    background: var(--accent);
-    color: #fff;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    font-family: inherit;
-    transition: opacity 0.15s;
-  }
-  .btn-primary:hover { opacity: 0.88; }
+.controls { display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+.search-inp { padding:5px 10px; border:1px solid var(--border); border-radius:var(--rs); font-family:inherit; font-size:13px; background:var(--surface); color:var(--text); outline:none; width:190px; }
+.search-inp:focus { border-color:var(--accent); }
+.fil-btn { padding:4px 11px; border:1px solid var(--border); border-radius:99px; background:transparent; color:var(--muted); font-size:12px; cursor:pointer; font-family:inherit; font-weight:500; transition:all .12s; }
+.fil-btn:hover { background:var(--bg); }
+.fil-btn.active { background:var(--text); color:#fff; border-color:var(--text); }
 
-  main { max-width: 1100px; margin: 0 auto; padding: 24px 20px 80px; }
+/* Table */
+table { width:100%; border-collapse:collapse; background:var(--surface); border-radius:var(--r); overflow:hidden; border:1px solid var(--border); }
+thead th { text-align:left; padding:9px 13px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); background:var(--bg); border-bottom:1px solid var(--border); }
+tbody tr { border-bottom:1px solid var(--border); transition:background .1s; }
+tbody tr:last-child { border-bottom:none; }
+tbody tr:hover { background:#FAFAF8; }
+td { padding:10px 13px; vertical-align:middle; }
+.name-cell { font-weight:500; }
+.sub-cell { color:var(--muted); font-size:12px; }
+.type-pill { font-size:11px; font-weight:600; padding:2px 8px; border-radius:4px; white-space:nowrap; }
+.tp-trial { background:#EDE9FE; color:#5B21B6; }
+.tp-sale  { background:#DCFCE7; color:#166534; }
+.tp-demo  { background:#FEF3C7; color:#92400E; }
+.tp-renew { background:#DBEAFE; color:#1E40AF; }
+.actions { display:flex; align-items:center; gap:5px; }
+.icon-btn { width:27px; height:27px; display:flex; align-items:center; justify-content:center; border:1px solid var(--border); border-radius:var(--rs); background:transparent; cursor:pointer; font-size:13px; transition:all .12s; color:var(--muted); }
+.icon-btn:hover { background:var(--bg); color:var(--text); }
+.ib-done:hover   { background:var(--ok-light);     color:var(--ok);     border-color:var(--ok); }
+.ib-delete:hover { background:var(--danger-light); color:var(--danger); border-color:var(--danger); }
 
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
-  }
+.empty-state, .loading-state { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:44px 24px; text-align:center; color:var(--muted); }
+.empty-icon { font-size:28px; margin-bottom:10px; }
+.empty-title { font-weight:600; color:var(--text); margin-bottom:4px; font-size:14px; }
 
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    box-shadow: var(--shadow);
-  }
+/* Modal */
+.overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:200; align-items:center; justify-content:center; }
+.overlay.open { display:flex; }
+.modal { background:var(--surface); border-radius:var(--r); padding:22px; width:100%; max-width:480px; margin:20px; box-shadow:0 8px 32px rgba(0,0,0,.18); max-height:90vh; overflow-y:auto; }
+.modal-title { font-size:16px; font-weight:600; margin-bottom:18px; }
+.frow { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.fg { margin-bottom:12px; }
+.fg.full { grid-column:1/-1; }
+label { display:block; font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
+input[type=text],input[type=email],input[type=date],select,textarea { width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:var(--rs); font-family:inherit; font-size:14px; background:var(--bg); color:var(--text); outline:none; transition:border-color .12s; }
+input:focus,select:focus,textarea:focus { border-color:var(--accent); background:var(--surface); }
+textarea { resize:vertical; min-height:66px; }
+.modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:18px; padding-top:14px; border-top:1px solid var(--border); }
+.btn-ghost { padding:7px 13px; border:1px solid var(--border); border-radius:var(--rs); background:transparent; color:var(--muted); font-size:13px; cursor:pointer; font-family:inherit; transition:all .12s; }
+.btn-ghost:hover { background:var(--bg); color:var(--text); }
 
-  .stat-label {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-weight: 500;
-  }
+#toast { position:fixed; bottom:22px; right:22px; background:var(--text); color:#fff; padding:9px 15px; border-radius:var(--rs); font-size:13px; font-weight:500; opacity:0; transform:translateY(8px); transition:all .22s; z-index:999; pointer-events:none; max-width:300px; }
+#toast.show { opacity:1; transform:translateY(0); }
 
-  .stat-value {
-    font-size: 26px;
-    font-weight: 600;
-    line-height: 1;
-  }
-
-  .stat-value.danger { color: var(--danger); }
-  .stat-value.warning { color: var(--warning); }
-  .stat-value.accent { color: var(--accent); }
-  .stat-value.success { color: var(--success); }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-
-  .section-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .badge {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 7px;
-    border-radius: 99px;
-  }
-
-  .badge-danger  { background: var(--danger-light);  color: var(--danger); }
-  .badge-warning { background: var(--warning-light); color: var(--warning); }
-  .badge-accent  { background: var(--accent-light);  color: var(--accent); }
-  .badge-success { background: var(--success-light); color: var(--success); }
-  .badge-muted   { background: #F0EEE8; color: var(--muted); }
-
-  .filter-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .filter-btn {
-    padding: 4px 12px;
-    border: 1px solid var(--border);
-    border-radius: 99px;
-    background: transparent;
-    color: var(--muted);
-    font-size: 12px;
-    cursor: pointer;
-    font-family: inherit;
-    font-weight: 500;
-    transition: all 0.12s;
-  }
-  .filter-btn:hover { background: var(--bg); }
-  .filter-btn.active { background: var(--text); color: #fff; border-color: var(--text); }
-
-  .search-input {
-    padding: 5px 10px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-family: inherit;
-    font-size: 13px;
-    background: var(--surface);
-    color: var(--text);
-    outline: none;
-    width: 200px;
-  }
-  .search-input:focus { border-color: var(--accent); }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--surface);
-    border-radius: var(--radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-  }
-
-  thead th {
-    text-align: left;
-    padding: 10px 14px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--muted);
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-  }
-
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    transition: background 0.1s;
-  }
-  tbody tr:last-child { border-bottom: none; }
-  tbody tr:hover { background: #FAFAF8; }
-
-  td {
-    padding: 11px 14px;
-    vertical-align: middle;
-  }
-
-  .name-cell { font-weight: 500; }
-  .company-cell { color: var(--muted); font-size: 13px; }
-
-  .type-pill {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 4px;
-  }
-  .type-trial { background: #EDE9FE; color: #5B21B6; }
-  .type-venda { background: #DCFCE7; color: #166534; }
-  .type-demo  { background: #FEF3C7; color: #92400E; }
-  .type-renovacao { background: #DBEAFE; color: #1E40AF; }
-
-  .date-cell {
-    font-size: 13px;
-    font-weight: 500;
-  }
-
-  .actions-cell {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .icon-btn {
-    width: 28px; height: 28px;
-    display: flex; align-items: center; justify-content: center;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: transparent;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.12s;
-    color: var(--muted);
-  }
-  .icon-btn:hover { background: var(--bg); color: var(--text); }
-  .icon-btn.done-btn:hover { background: var(--success-light); color: var(--success); border-color: var(--success); }
-  .icon-btn.delete-btn:hover { background: var(--danger-light); color: var(--danger); border-color: var(--danger); }
-
-  .empty-state {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 48px 24px;
-    text-align: center;
-    color: var(--muted);
-    box-shadow: var(--shadow);
-  }
-
-  .empty-icon { font-size: 32px; margin-bottom: 12px; }
-  .empty-title { font-weight: 600; color: var(--text); margin-bottom: 4px; }
-
-  /* Modal */
-  .modal-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.35);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-overlay.open { display: flex; }
-
-  .modal {
-    background: var(--surface);
-    border-radius: var(--radius);
-    padding: 24px;
-    width: 100%;
-    max-width: 480px;
-    margin: 20px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-  }
-
-  .modal-title {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 20px;
-  }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .form-group {
-    margin-bottom: 14px;
-  }
-  .form-group.full { grid-column: 1 / -1; }
-
-  label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-bottom: 5px;
-  }
-
-  input[type="text"], input[type="email"], input[type="date"], select, textarea {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-family: inherit;
-    font-size: 14px;
-    background: var(--bg);
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.12s;
-  }
-  input:focus, select:focus, textarea:focus { border-color: var(--accent); background: var(--surface); }
-  textarea { resize: vertical; min-height: 70px; }
-
-  .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-  }
-
-  .btn-ghost {
-    padding: 7px 14px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: transparent;
-    color: var(--muted);
-    font-size: 13px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.12s;
-  }
-  .btn-ghost:hover { background: var(--bg); color: var(--text); }
-
-  /* Toast */
-  #toast {
-    position: fixed;
-    bottom: 24px; right: 24px;
-    background: var(--text);
-    color: #fff;
-    padding: 10px 16px;
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-    font-weight: 500;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: all 0.25s;
-    z-index: 999;
-    pointer-events: none;
-    max-width: 320px;
-  }
-  #toast.show { opacity: 1; transform: translateY(0); }
-
-  /* notification banner */
-  #notif-banner {
-    display: none;
-    background: var(--warning-light);
-    border: 1px solid #F0C866;
-    border-radius: var(--radius-sm);
-    padding: 10px 14px;
-    margin-bottom: 16px;
-    font-size: 13px;
-    color: var(--warning);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  @media (max-width: 700px) {
-    .stats-row { grid-template-columns: repeat(2, 1fr); }
-    .form-row { grid-template-columns: 1fr; }
-    table thead { display: none; }
-    table, tbody, tr, td { display: block; }
-    tr { padding: 12px 14px; border-bottom: 1px solid var(--border); }
-    td { padding: 2px 0; border: none; }
-    td::before { content: attr(data-label); font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; display: block; }
-    .search-input { width: 100%; }
-    .filter-row { flex-wrap: wrap; }
-  }
+@media(max-width:680px){
+  .stats-row { grid-template-columns:repeat(2,1fr); }
+  .frow { grid-template-columns:1fr; }
+  table thead { display:none; }
+  table,tbody,tr,td { display:block; }
+  tr { padding:11px 13px; border-bottom:1px solid var(--border); }
+  td { padding:2px 0; border:none; }
+  td::before { content:attr(data-label); font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; display:block; }
+  .search-inp { width:130px; }
+  .header-right { gap:5px; }
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">
-    <div class="logo-dot"></div>
-    Follow-up Tracker
+<!-- ══ LOGIN ══ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-icon">📋</div>
+    <div class="login-title" id="lt">Follow-up Tracker</div>
+    <div class="login-sub" id="ls">Track your sales follow-ups and trial accounts in one place.</div>
+
+    <div class="lang-row">
+      <button class="lang-btn" onclick="setLang('pt')">🇧🇷 PT</button>
+      <button class="lang-btn active" onclick="setLang('en')">🇺🇸 EN</button>
+      <button class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+    </div>
+
+    <input class="name-input" type="text" id="seller-input" maxlength="60" placeholder="Your name…">
+    <button class="btn-enter" onclick="enterApp()" id="enter-btn">Enter →</button>
   </div>
-  <div class="header-actions">
-    <button id="notif-btn" onclick="toggleNotifications()">🔔 Notificações</button>
-    <button class="btn-primary" onclick="openModal()">+ Novo follow-up</button>
-  </div>
-</header>
+</div>
 
-<main>
+<!-- ══ APP ══ -->
+<div id="app">
+  <header>
+    <div class="logo"><div class="logo-dot"></div> Follow-up Tracker</div>
+    <div class="header-right">
+      <span class="seller-chip" id="seller-chip"></span>
+      <div class="lang-row" style="margin:0">
+        <button class="lang-btn" onclick="setLang('pt')">PT</button>
+        <button class="lang-btn" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('es')">ES</button>
+      </div>
+      <button class="btn-sm" onclick="changeSeller()" id="btn-change">Change</button>
+      <button class="btn-primary" onclick="openModal()" id="btn-new">+ New</button>
+    </div>
+  </header>
 
-  <div id="notif-banner" style="display:none">
-    ⚠️ Ative as notificações do navegador para receber alertas de follow-up no desktop.
-    <button onclick="requestNotifications()" style="margin-left:auto;padding:4px 10px;background:#C97820;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;">Ativar</button>
-    <button onclick="document.getElementById('notif-banner').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--warning);">×</button>
-  </div>
+  <main>
+    <div id="cfg-banner">
+      ⚠️ <strong>Setup needed:</strong> edit <code>API_URL</code> and <code>SECRET_KEY</code> at the top of this file.
+    </div>
 
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-label">Atrasados</div>
-      <div class="stat-value danger" id="stat-overdue">0</div>
+    <div class="sync-row">
+      <div class="sync-dot" id="sync-dot"></div>
+      <span id="sync-label">Synced</span>
     </div>
-    <div class="stat-card">
-      <div class="stat-label">Hoje</div>
-      <div class="stat-value warning" id="stat-today">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Próximos 7 dias</div>
-      <div class="stat-value accent" id="stat-soon">0</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-label">Total ativo</div>
-      <div class="stat-value success" id="stat-total">0</div>
-    </div>
-  </div>
 
-  <div class="section-header">
-    <div class="section-title">
-      Follow-ups
-      <span class="badge badge-muted" id="count-badge">0</span>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label" data-i="stat_overdue">Overdue</div><div class="stat-val c-danger" id="s-overdue">—</div></div>
+      <div class="stat-card"><div class="stat-label" data-i="stat_today">Today</div><div class="stat-val c-warn" id="s-today">—</div></div>
+      <div class="stat-card"><div class="stat-label" data-i="stat_soon">Next 7 days</div><div class="stat-val c-accent" id="s-soon">—</div></div>
+      <div class="stat-card"><div class="stat-label" data-i="stat_total">Active total</div><div class="stat-val c-ok" id="s-total">—</div></div>
     </div>
-    <div class="filter-row">
-      <input class="search-input" type="text" id="search" placeholder="Buscar nome ou empresa…" oninput="render()">
-      <button class="filter-btn active" data-filter="all" onclick="setFilter(this)">Todos</button>
-      <button class="filter-btn" data-filter="atrasado" onclick="setFilter(this)">Atrasados</button>
-      <button class="filter-btn" data-filter="hoje" onclick="setFilter(this)">Hoje</button>
-      <button class="filter-btn" data-filter="proximo" onclick="setFilter(this)">Próximos</button>
+
+    <div class="sec-header">
+      <div class="sec-title">
+        <span data-i="my_followups">My follow-ups</span>
+        <span class="badge bm" id="count-badge">0</span>
+      </div>
+      <div class="controls">
+        <input class="search-inp" type="text" id="search" oninput="render()" data-placeholder-i="search_ph">
+        <button class="fil-btn active" data-filter="all"      onclick="setFilter(this)" data-i="f_all">All</button>
+        <button class="fil-btn"        data-filter="overdue"  onclick="setFilter(this)" data-i="f_overdue">Overdue</button>
+        <button class="fil-btn"        data-filter="today"    onclick="setFilter(this)" data-i="f_today">Today</button>
+        <button class="fil-btn"        data-filter="soon"     onclick="setFilter(this)" data-i="f_soon">Soon</button>
+        <button class="btn-sm" onclick="loadItems(true)" data-i="refresh">↻ Refresh</button>
+      </div>
     </div>
-  </div>
 
-  <div id="table-container"></div>
-
-</main>
+    <div id="table-wrap">
+      <div class="loading-state"><div class="empty-icon">⏳</div><span data-i="loading">Loading…</span></div>
+    </div>
+  </main>
+</div>
 
 <!-- Modal -->
-<div class="modal-overlay" id="modal">
+<div class="overlay" id="modal-overlay">
   <div class="modal">
-    <div class="modal-title" id="modal-title">Novo follow-up</div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Nome do contato *</label>
-        <input type="text" id="f-name" placeholder="João Silva">
+    <div class="modal-title" id="modal-title">New follow-up</div>
+    <div class="frow">
+      <div class="fg">
+        <label data-i="lbl_name">Contact name *</label>
+        <input type="text" id="f-name" data-placeholder-i="ph_name">
       </div>
-      <div class="form-group">
-        <label>Empresa</label>
-        <input type="text" id="f-company" placeholder="Acme Corp">
+      <div class="fg">
+        <label data-i="lbl_company">Company</label>
+        <input type="text" id="f-company" data-placeholder-i="ph_company">
       </div>
-      <div class="form-group">
-        <label>E-mail</label>
-        <input type="email" id="f-email" placeholder="joao@acme.com">
+      <div class="fg">
+        <label data-i="lbl_email">Email</label>
+        <input type="email" id="f-email" placeholder="contact@company.com">
       </div>
-      <div class="form-group">
-        <label>Tipo</label>
+      <div class="fg">
+        <label data-i="lbl_type">Type</label>
         <select id="f-type">
-          <option value="trial">Trial</option>
-          <option value="venda">Venda</option>
-          <option value="demo">Demo</option>
-          <option value="renovacao">Renovação</option>
+          <option value="Trial">Trial</option>
+          <option value="Sale" data-i-opt="type_sale">Sale</option>
+          <option value="Demo">Demo</option>
+          <option value="Renewal" data-i-opt="type_renewal">Renewal</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Data do follow-up *</label>
+      <div class="fg">
+        <label data-i="lbl_date">Follow-up date *</label>
         <input type="date" id="f-date">
       </div>
-      <div class="form-group">
-        <label>Valor estimado (R$)</label>
-        <input type="text" id="f-value" placeholder="5.000">
+      <div class="fg">
+        <label data-i="lbl_value">Est. value</label>
+        <input type="text" id="f-value" placeholder="5,000">
       </div>
-      <div class="form-group full">
-        <label>Observações</label>
-        <textarea id="f-notes" placeholder="Contexto da conversa, próximo passo…"></textarea>
+      <div class="fg full">
+        <label data-i="lbl_notes">Notes</label>
+        <textarea id="f-notes" data-placeholder-i="ph_notes"></textarea>
       </div>
     </div>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeModal()">Cancelar</button>
-      <button class="btn-primary" onclick="saveItem()">Salvar follow-up</button>
+      <button class="btn-ghost" onclick="closeModal()" data-i="cancel">Cancel</button>
+      <button class="btn-primary" id="save-btn" onclick="saveItem()" data-i="save_btn">Save follow-up</button>
     </div>
   </div>
 </div>
@@ -527,314 +262,364 @@
 <div id="toast"></div>
 
 <script>
-const STORE_KEY = 'followups_v2';
-let items = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+/* ═══════════════════════════════════════════════════════
+   ⚙️  CONFIGURAÇÃO — edite estas 2 variáveis
+   ═══════════════════════════════════════════════════════ */
+const API_URL    = 'COLE_A_URL_DO_WEB_APP_AQUI';
+const SECRET_KEY = 'TROQUE_ESTA_CHAVE'; // igual ao que está no Apps Script
+/* ═══════════════════════════════════════════════════════ */
+
+/* ── i18n ─────────────────────────────────────────────── */
+const T = {
+  en: {
+    login_sub:'Track your sales follow-ups and trial accounts in one place.',
+    login_ph:'Your name…', enter_btn:'Enter →',
+    stat_overdue:'Overdue', stat_today:'Today', stat_soon:'Next 7 days', stat_total:'Active total',
+    my_followups:'My follow-ups', search_ph:'Search…',
+    f_all:'All', f_overdue:'Overdue', f_today:'Today', f_soon:'Soon', refresh:'↻ Refresh',
+    lbl_name:'Contact name *', lbl_company:'Company', lbl_email:'Email', lbl_type:'Type',
+    lbl_date:'Follow-up date *', lbl_value:'Est. value', lbl_notes:'Notes',
+    ph_name:'John Smith', ph_company:'Acme Corp', ph_notes:'Context, next steps…',
+    cancel:'Cancel', save_btn:'Save follow-up',
+    type_sale:'Sale', type_renewal:'Renewal',
+    modal_new:'New follow-up', modal_edit:'Edit follow-up',
+    change_btn:'Change', synced:'Synced', syncing:'Syncing…', sync_err:'Sync error',
+    saving:'Saving…', deleting:'Removing…',
+    toast_saved:'✅ Follow-up saved!', toast_updated:'✏️ Follow-up updated!',
+    toast_deleted:'🗑️ Removed!', toast_done:'✅ Done!', toast_reopened:'↩️ Reopened!',
+    toast_err_name:'⚠️ Contact name is required.', toast_err_date:'⚠️ Choose a follow-up date.',
+    toast_err_api:'❌ Error connecting. Check the API_URL.', toast_err_save:'❌ Error saving. Try again.',
+    confirm_delete:'Remove this follow-up?',
+    badge_overdue:'Overdue', badge_today:'Today', badge_soon:'Soon', badge_scheduled:'Scheduled', badge_done:'Done',
+    col_contact:'Contact', col_type:'Type', col_date:'Date', col_status:'Status', col_value:'Value', col_notes:'Notes', col_actions:'Actions',
+    empty_title:'No follow-ups found', empty_sub:'Add a new one or change the filter.',
+    loading:'Loading…', notif_overdue:'follow-up(s) overdue', notif_today:'follow-up(s) for today',
+    cfg_warn:'Setup needed: edit <code>API_URL</code> and <code>SECRET_KEY</code> at the top of this file.',
+  },
+  pt: {
+    login_sub:'Acompanhe seus follow-ups de vendas e trials em um só lugar.',
+    login_ph:'Seu nome…', enter_btn:'Entrar →',
+    stat_overdue:'Atrasados', stat_today:'Hoje', stat_soon:'Próx. 7 dias', stat_total:'Total ativo',
+    my_followups:'Meus follow-ups', search_ph:'Buscar…',
+    f_all:'Todos', f_overdue:'Atrasados', f_today:'Hoje', f_soon:'Em breve', refresh:'↻ Atualizar',
+    lbl_name:'Nome do contato *', lbl_company:'Empresa', lbl_email:'E-mail', lbl_type:'Tipo',
+    lbl_date:'Data do follow-up *', lbl_value:'Valor estimado', lbl_notes:'Observações',
+    ph_name:'João Silva', ph_company:'Acme Corp', ph_notes:'Contexto, próximos passos…',
+    cancel:'Cancelar', save_btn:'Salvar follow-up',
+    type_sale:'Venda', type_renewal:'Renovação',
+    modal_new:'Novo follow-up', modal_edit:'Editar follow-up',
+    change_btn:'Trocar', synced:'Sincronizado', syncing:'Sincronizando…', sync_err:'Erro ao sincronizar',
+    saving:'Salvando…', deleting:'Removendo…',
+    toast_saved:'✅ Follow-up adicionado!', toast_updated:'✏️ Follow-up atualizado!',
+    toast_deleted:'🗑️ Removido!', toast_done:'✅ Concluído!', toast_reopened:'↩️ Reaberto!',
+    toast_err_name:'⚠️ Informe o nome do contato.', toast_err_date:'⚠️ Escolha a data do follow-up.',
+    toast_err_api:'❌ Erro ao conectar. Verifique a API_URL.', toast_err_save:'❌ Erro ao salvar. Tente novamente.',
+    confirm_delete:'Remover este follow-up?',
+    badge_overdue:'Atrasado', badge_today:'Hoje', badge_soon:'Em breve', badge_scheduled:'Agendado', badge_done:'Concluído',
+    col_contact:'Contato', col_type:'Tipo', col_date:'Data', col_status:'Status', col_value:'Valor', col_notes:'Obs', col_actions:'Ações',
+    empty_title:'Nenhum follow-up encontrado', empty_sub:'Adicione um novo ou mude o filtro.',
+    loading:'Carregando…', notif_overdue:'follow-up(s) atrasados', notif_today:'follow-up(s) para hoje',
+    cfg_warn:'Configuração necessária: edite <code>API_URL</code> e <code>SECRET_KEY</code> no topo do arquivo.',
+  },
+  es: {
+    login_sub:'Lleva el seguimiento de tus follow-ups de ventas y trials en un solo lugar.',
+    login_ph:'Tu nombre…', enter_btn:'Entrar →',
+    stat_overdue:'Atrasados', stat_today:'Hoy', stat_soon:'Próx. 7 días', stat_total:'Total activo',
+    my_followups:'Mis follow-ups', search_ph:'Buscar…',
+    f_all:'Todos', f_overdue:'Atrasados', f_today:'Hoy', f_soon:'Próximos', refresh:'↻ Actualizar',
+    lbl_name:'Nombre del contacto *', lbl_company:'Empresa', lbl_email:'Email', lbl_type:'Tipo',
+    lbl_date:'Fecha del follow-up *', lbl_value:'Valor estimado', lbl_notes:'Observaciones',
+    ph_name:'Juan García', ph_company:'Acme Corp', ph_notes:'Contexto, próximos pasos…',
+    cancel:'Cancelar', save_btn:'Guardar follow-up',
+    type_sale:'Venta', type_renewal:'Renovación',
+    modal_new:'Nuevo follow-up', modal_edit:'Editar follow-up',
+    change_btn:'Cambiar', synced:'Sincronizado', syncing:'Sincronizando…', sync_err:'Error al sincronizar',
+    saving:'Guardando…', deleting:'Eliminando…',
+    toast_saved:'✅ Follow-up guardado!', toast_updated:'✏️ Follow-up actualizado!',
+    toast_deleted:'🗑️ Eliminado!', toast_done:'✅ Completado!', toast_reopened:'↩️ Reabierto!',
+    toast_err_name:'⚠️ Ingresa el nombre del contacto.', toast_err_date:'⚠️ Elige la fecha del follow-up.',
+    toast_err_api:'❌ Error al conectar. Verifica la API_URL.', toast_err_save:'❌ Error al guardar. Inténtalo de nuevo.',
+    confirm_delete:'¿Eliminar este follow-up?',
+    badge_overdue:'Atrasado', badge_today:'Hoy', badge_soon:'Próximo', badge_scheduled:'Programado', badge_done:'Completado',
+    col_contact:'Contacto', col_type:'Tipo', col_date:'Fecha', col_status:'Estado', col_value:'Valor', col_notes:'Notas', col_actions:'Acciones',
+    empty_title:'No se encontraron follow-ups', empty_sub:'Agrega uno nuevo o cambia el filtro.',
+    loading:'Cargando…', notif_overdue:'follow-up(s) atrasados', notif_today:'follow-up(s) para hoy',
+    cfg_warn:'Configuración necesaria: edita <code>API_URL</code> y <code>SECRET_KEY</code> al inicio del archivo.',
+  }
+};
+
+let lang = localStorage.getItem('lang') || 'en';
+let seller = localStorage.getItem('seller') || '';
+let items = [];
 let currentFilter = 'all';
-let editingId = null;
-let notifEnabled = Notification.permission === 'granted';
+let editingItem = null;
 
-function save() { localStorage.setItem(STORE_KEY, JSON.stringify(items)); }
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
-
-function today() {
-  const d = new Date();
-  return d.toISOString().split('T')[0];
+/* ── Lang ── */
+function setLang(l) {
+  lang = l; localStorage.setItem('lang', l);
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim().toLowerCase().includes(l)));
+  applyTranslations();
 }
 
-function addDays(dateStr, n) {
-  const d = new Date(dateStr + 'T00:00:00');
-  d.setDate(d.getDate() + n);
-  return d.toISOString().split('T')[0];
-}
+function t(k) { return (T[lang] || T.en)[k] || k; }
 
-function classifyDate(dateStr) {
-  const t = today();
-  if (dateStr < t) return 'atrasado';
-  if (dateStr === t) return 'hoje';
-  if (dateStr <= addDays(t, 7)) return 'proximo';
-  return 'futuro';
-}
-
-function fmtDate(dateStr) {
-  const [y, m, d] = dateStr.split('-');
-  return `${d}/${m}/${y}`;
-}
-
-function showToast(msg, duration = 2800) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), duration);
-}
-
-function setFilter(btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  currentFilter = btn.dataset.filter;
+function applyTranslations() {
+  document.querySelectorAll('[data-i]').forEach(el => {
+    const k = el.dataset.i; if (T[lang][k]) el.textContent = T[lang][k];
+  });
+  document.querySelectorAll('[data-placeholder-i]').forEach(el => {
+    const k = el.dataset.placeholderI; if (T[lang][k]) el.placeholder = T[lang][k];
+  });
+  document.querySelectorAll('[data-i-opt]').forEach(el => {
+    const k = el.dataset.iOpt; if (T[lang][k]) el.textContent = T[lang][k];
+  });
+  // Login screen specific
+  const ls = document.getElementById('ls'); if (ls) ls.textContent = t('login_sub');
+  const si = document.getElementById('seller-input'); if (si) si.placeholder = t('login_ph');
+  const eb = document.getElementById('enter-btn'); if (eb) eb.textContent = t('enter_btn');
+  const cb = document.getElementById('btn-change'); if (cb) cb.textContent = t('change_btn');
+  const nb = document.getElementById('btn-new');
+  if (nb) nb.innerHTML = '+ ' + t('modal_new').replace('Nuevo ','').replace('Novo ','').replace('New ','');
+  document.getElementById('sync-label').textContent = t('synced');
+  if (document.getElementById('cfg-banner').style.display !== 'none')
+    document.getElementById('cfg-banner').innerHTML = '⚠️ ' + t('cfg_warn');
   render();
 }
 
-function openModal(id = null) {
-  editingId = id;
-  const modal = document.getElementById('modal');
-  document.getElementById('modal-title').textContent = id ? 'Editar follow-up' : 'Novo follow-up';
-  if (id) {
-    const item = items.find(i => i.id === id);
-    if (item) {
-      document.getElementById('f-name').value    = item.name || '';
-      document.getElementById('f-company').value = item.company || '';
-      document.getElementById('f-email').value   = item.email || '';
-      document.getElementById('f-type').value    = item.type || 'trial';
-      document.getElementById('f-date').value    = item.date || '';
-      document.getElementById('f-value').value   = item.value || '';
-      document.getElementById('f-notes').value   = item.notes || '';
-    }
-  } else {
-    ['f-name','f-company','f-email','f-value','f-notes'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('f-type').value = 'trial';
-    document.getElementById('f-date').value = addDays(today(), 1);
+/* ── Auth / seller ── */
+function enterApp() {
+  const name = document.getElementById('seller-input').value.trim();
+  if (!name) { document.getElementById('seller-input').focus(); return; }
+  seller = name; localStorage.setItem('seller', name);
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('seller-chip').textContent = '👤 ' + seller;
+  if (API_URL === 'COLE_A_URL_DO_WEB_APP_AQUI') {
+    document.getElementById('cfg-banner').style.display = 'block';
+    document.getElementById('cfg-banner').innerHTML = '⚠️ ' + t('cfg_warn');
   }
-  modal.classList.add('open');
-  setTimeout(() => document.getElementById('f-name').focus(), 50);
+  setLang(lang);
+  loadItems();
+  requestNotifications();
 }
 
-function closeModal() {
-  document.getElementById('modal').classList.remove('open');
-  editingId = null;
+function changeSeller() {
+  seller = ''; localStorage.removeItem('seller');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
 }
 
-function saveItem() {
+/* ── API ── */
+async function api(action, payload = {}) {
+  setSyncState('busy', t('syncing'));
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ action, key: SECRET_KEY, ...payload })
+  });
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.error || 'API error');
+  return data;
+}
+
+async function loadItems(manual = false) {
+  if (API_URL === 'COLE_A_URL_DO_WEB_APP_AQUI') {
+    setSyncState('err', t('sync_err'));
+    document.getElementById('table-wrap').innerHTML =
+      `<div class="empty-state"><div class="empty-icon">⚙️</div><div class="empty-title">${t('cfg_warn')}</div></div>`;
+    return;
+  }
+  try {
+    const data = await api('list', { seller });
+    items = data.items || [];
+    setSyncState('ok', t('synced'));
+    if (manual) showToast(t('refresh') + ' OK');
+    render();
+  } catch(e) {
+    setSyncState('err', t('sync_err'));
+    showToast(t('toast_err_api'));
+    console.error(e);
+    document.getElementById('table-wrap').innerHTML =
+      `<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">${t('sync_err')}</div></div>`;
+  }
+}
+
+/* ── CRUD ── */
+function openModal(item = null) {
+  editingItem = item;
+  document.getElementById('modal-title').textContent = item ? t('modal_edit') : t('modal_new');
+  document.getElementById('f-name').value    = item?.name    || '';
+  document.getElementById('f-company').value = item?.company || '';
+  document.getElementById('f-email').value   = item?.email   || '';
+  document.getElementById('f-type').value    = item?.type    || 'Trial';
+  document.getElementById('f-date').value    = item?.date    || addDays(today(), 1);
+  document.getElementById('f-value').value   = item?.value   || '';
+  document.getElementById('f-notes').value   = item?.notes   || '';
+  document.getElementById('modal-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('f-name').focus(), 60);
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); editingItem = null; }
+
+async function saveItem() {
   const name = document.getElementById('f-name').value.trim();
   const date = document.getElementById('f-date').value;
-  if (!name) { showToast('⚠️ Informe o nome do contato'); return; }
-  if (!date) { showToast('⚠️ Escolha a data do follow-up'); return; }
-
+  if (!name) { showToast(t('toast_err_name')); return; }
+  if (!date) { showToast(t('toast_err_date')); return; }
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true; btn.textContent = t('saving');
   const item = {
-    id: editingId || uid(),
-    name,
+    ...(editingItem || {}),
+    seller, name,
     company: document.getElementById('f-company').value.trim(),
     email:   document.getElementById('f-email').value.trim(),
     type:    document.getElementById('f-type').value,
-    date,
-    value:   document.getElementById('f-value').value.trim(),
-    notes:   document.getElementById('f-notes').value.trim(),
-    done:    false,
-    createdAt: editingId ? (items.find(i=>i.id===editingId)?.createdAt || Date.now()) : Date.now()
+    date, value: document.getElementById('f-value').value.trim(),
+    notes: document.getElementById('f-notes').value.trim(),
   };
-
-  if (editingId) {
-    const idx = items.findIndex(i => i.id === editingId);
-    item.done = items[idx].done;
-    items[idx] = item;
-    showToast('✏️ Follow-up atualizado!');
-  } else {
-    items.unshift(item);
-    showToast('✅ Follow-up adicionado!');
-  }
-
-  save(); closeModal(); render();
+  try {
+    if (editingItem) {
+      await api('update', { item });
+      showToast(t('toast_updated'));
+    } else {
+      await api('save', { item });
+      showToast(t('toast_saved'));
+    }
+    closeModal(); await loadItems();
+  } catch(e) {
+    showToast(t('toast_err_save')); setSyncState('err', t('sync_err')); console.error(e);
+  } finally { btn.disabled = false; btn.textContent = t('save_btn'); }
 }
 
-function markDone(id) {
-  const item = items.find(i => i.id === id);
-  if (!item) return;
-  item.done = !item.done;
-  save(); render();
-  showToast(item.done ? '✅ Marcado como concluído!' : '↩️ Reaberto!');
+async function toggleDone(item) {
+  const updated = { ...item, done: !item.done };
+  try {
+    await api('update', { item: updated });
+    showToast(updated.done ? t('toast_done') : t('toast_reopened'));
+    await loadItems();
+  } catch(e) { showToast(t('toast_err_save')); }
 }
 
-function deleteItem(id) {
-  if (!confirm('Remover este follow-up?')) return;
-  items = items.filter(i => i.id !== id);
-  save(); render();
-  showToast('🗑️ Removido');
+async function deleteItem(item) {
+  if (!confirm(t('confirm_delete'))) return;
+  setSyncState('busy', t('deleting'));
+  try {
+    await api('delete', { id: item.id });
+    showToast(t('toast_deleted')); await loadItems();
+  } catch(e) { showToast(t('toast_err_save')); setSyncState('err', t('sync_err')); }
 }
 
+/* ── Render ── */
 function render() {
-  const search = document.getElementById('search').value.toLowerCase();
-  const t = today();
-
+  const search = (document.getElementById('search')?.value || '').toLowerCase();
+  const tn = today();
   const active = items.filter(i => !i.done);
-  const overdue = active.filter(i => i.date < t).length;
-  const todayC  = active.filter(i => i.date === t).length;
-  const soon    = active.filter(i => i.date > t && i.date <= addDays(t, 7)).length;
-
-  document.getElementById('stat-overdue').textContent = overdue;
-  document.getElementById('stat-today').textContent   = todayC;
-  document.getElementById('stat-soon').textContent    = soon;
-  document.getElementById('stat-total').textContent   = active.length;
+  document.getElementById('s-overdue').textContent = active.filter(i => i.date < tn).length;
+  document.getElementById('s-today').textContent   = active.filter(i => i.date === tn).length;
+  document.getElementById('s-soon').textContent    = active.filter(i => i.date > tn && i.date <= addDays(tn,7)).length;
+  document.getElementById('s-total').textContent   = active.length;
 
   let filtered = items.filter(i => {
-    const q = (i.name + ' ' + i.company).toLowerCase();
-    if (search && !q.includes(search)) return false;
-    if (currentFilter === 'all') return true;
-    if (currentFilter === 'atrasado') return !i.done && i.date < t;
-    if (currentFilter === 'hoje')     return !i.done && i.date === t;
-    if (currentFilter === 'proximo')  return !i.done && i.date > t && i.date <= addDays(t, 7);
+    if (search && !(i.name + ' ' + (i.company||'')).toLowerCase().includes(search)) return false;
+    if (currentFilter === 'overdue') return !i.done && i.date < tn;
+    if (currentFilter === 'today')   return !i.done && i.date === tn;
+    if (currentFilter === 'soon')    return !i.done && i.date > tn && i.date <= addDays(tn,7);
     return true;
   });
-
-  filtered.sort((a, b) => {
-    if (a.done !== b.done) return a.done ? 1 : -1;
-    return a.date.localeCompare(b.date);
-  });
-
+  filtered.sort((a,b) => { if (a.done !== b.done) return a.done ? 1 : -1; return a.date.localeCompare(b.date); });
   document.getElementById('count-badge').textContent = filtered.length;
 
-  const container = document.getElementById('table-container');
-
+  const wrap = document.getElementById('table-wrap');
   if (filtered.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">📋</div>
-        <div class="empty-title">Nenhum follow-up encontrado</div>
-        <div style="font-size:13px;margin-top:4px">Adicione um novo ou mude o filtro acima.</div>
-      </div>`;
+    wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">${t('empty_title')}</div><div style="font-size:13px;margin-top:4px">${t('empty_sub')}</div></div>`;
     return;
   }
 
-  const typeLabel = { trial: 'Trial', venda: 'Venda', demo: 'Demo', renovacao: 'Renovação' };
-  const typeClass = { trial: 'type-trial', venda: 'type-venda', demo: 'type-demo', renovacao: 'type-renovacao' };
+  const typeClass = { Trial:'tp-trial', Sale:'tp-sale', Venda:'tp-sale', Venta:'tp-sale', Demo:'tp-demo', Renewal:'tp-renew', Renovação:'tp-renew', Renovación:'tp-renew' };
 
-  const rows = filtered.map(item => {
-    const cls = classifyDate(item.date);
-    const dateCls = item.done ? '' :
-      cls === 'atrasado' ? 'danger' :
-      cls === 'hoje' ? 'warning' : '';
+  const rows = filtered.map((item, idx) => {
+    const cls = item.date < tn ? 'overdue' : item.date === tn ? 'today' : '';
+    const dateCss = !item.done && cls === 'overdue' ? 'color:var(--danger);font-weight:500' : !item.done && cls === 'today' ? 'color:var(--warn);font-weight:500' : 'font-weight:500';
+    const badge = item.done
+      ? `<span class="badge bs">${t('badge_done')}</span>`
+      : cls === 'overdue' ? `<span class="badge bd">${t('badge_overdue')}</span>`
+      : cls === 'today'   ? `<span class="badge bw">${t('badge_today')}</span>`
+      : item.date <= addDays(tn,7) ? `<span class="badge ba">${t('badge_soon')}</span>`
+      : `<span class="badge bm">${t('badge_scheduled')}</span>`;
 
-    const statusBadge = item.done
-      ? `<span class="badge badge-success">Concluído</span>`
-      : cls === 'atrasado' ? `<span class="badge badge-danger">Atrasado</span>`
-      : cls === 'hoje'     ? `<span class="badge badge-warning">Hoje</span>`
-      : cls === 'proximo'  ? `<span class="badge badge-accent">Em breve</span>`
-      : `<span class="badge badge-muted">Agendado</span>`;
-
-    const opacity = item.done ? 'opacity:0.5;' : '';
-    const valueFmt = item.value ? `R$ ${item.value}` : '—';
-
-    return `<tr style="${opacity}">
-      <td data-label="Contato">
-        <div class="name-cell">${escHtml(item.name)}</div>
-        <div class="company-cell">${escHtml(item.company || '—')}</div>
-      </td>
-      <td data-label="Tipo"><span class="type-pill ${typeClass[item.type] || ''}">${typeLabel[item.type] || item.type}</span></td>
-      <td data-label="Data"><span class="date-cell" style="color:${dateCls === 'danger' ? 'var(--danger)' : dateCls === 'warning' ? 'var(--warning)' : 'inherit'}">${fmtDate(item.date)}</span></td>
-      <td data-label="Status">${statusBadge}</td>
-      <td data-label="Valor" style="color:var(--muted);font-size:13px">${valueFmt}</td>
-      <td data-label="Obs" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:12px">${escHtml(item.notes || '')}</td>
-      <td data-label="Ações">
-        <div class="actions-cell">
-          <button class="icon-btn done-btn" title="${item.done ? 'Reabrir' : 'Marcar concluído'}" onclick="markDone('${item.id}')">
-            ${item.done ? '↩' : '✓'}
-          </button>
-          <button class="icon-btn" title="Editar" onclick="openModal('${item.id}')">✎</button>
-          <button class="icon-btn delete-btn" title="Remover" onclick="deleteItem('${item.id}')">✕</button>
-        </div>
-      </td>
+    return `<tr style="${item.done ? 'opacity:.5' : ''}">
+      <td data-label="${t('col_contact')}"><div class="name-cell">${esc(item.name)}</div><div class="sub-cell">${esc(item.company||'—')}</div></td>
+      <td data-label="${t('col_type')}"><span class="type-pill ${typeClass[item.type]||'tp-trial'}">${esc(item.type)}</span></td>
+      <td data-label="${t('col_date')}"><span style="${dateCss}">${fmtDate(item.date)}</span></td>
+      <td data-label="${t('col_status')}">${badge}</td>
+      <td data-label="${t('col_value')}" style="color:var(--muted);font-size:13px">${item.value ? item.value : '—'}</td>
+      <td data-label="${t('col_notes')}" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:12px">${esc(item.notes||'')}</td>
+      <td data-label="${t('col_actions')}"><div class="actions">
+        <button class="icon-btn ib-done"   title="${item.done ? t('toast_reopened') : t('toast_done')}" onclick="toggleDone(items[${idx}])">${item.done ? '↩' : '✓'}</button>
+        <button class="icon-btn"           title="Edit" onclick="openModal(items.find(i=>i.id==='${item.id}'))">✎</button>
+        <button class="icon-btn ib-delete" title="Delete" onclick="deleteItem(items.find(i=>i.id==='${item.id}'))">✕</button>
+      </div></td>
     </tr>`;
   }).join('');
 
-  container.innerHTML = `
-    <table>
-      <thead>
-        <tr>
-          <th>Contato</th>
-          <th>Tipo</th>
-          <th>Data</th>
-          <th>Status</th>
-          <th>Valor</th>
-          <th>Observações</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>`;
+  wrap.innerHTML = `<table>
+    <thead><tr>
+      <th>${t('col_contact')}</th><th>${t('col_type')}</th><th>${t('col_date')}</th>
+      <th>${t('col_status')}</th><th>${t('col_value')}</th><th>${t('col_notes')}</th><th>${t('col_actions')}</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
 }
 
-function escHtml(str) {
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function toggleNotifications() {
-  if (Notification.permission === 'granted') {
-    showToast('🔔 Notificações já estão ativas!');
-    document.getElementById('notif-btn').classList.add('active');
-  } else {
-    requestNotifications();
-  }
-}
-
+/* ── Notifications ── */
 function requestNotifications() {
-  if (!('Notification' in window)) {
-    showToast('⚠️ Seu navegador não suporta notificações');
-    return;
-  }
-  Notification.requestPermission().then(perm => {
-    notifEnabled = perm === 'granted';
-    if (notifEnabled) {
-      document.getElementById('notif-btn').classList.add('active');
-      document.getElementById('notif-banner').style.display = 'none';
-      showToast('✅ Notificações ativadas!');
-      new Notification('Follow-up Tracker 🎉', {
-        body: 'Você vai receber alertas de follow-up!',
-        icon: 'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/72x72/1f514.png'
-      });
-      checkAndNotify();
-    } else {
-      showToast('⚠️ Permissão negada. Ative nas configurações do navegador.');
-    }
-  });
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') Notification.requestPermission().then(checkAndNotify);
+  else checkAndNotify();
+  setInterval(checkAndNotify, 30 * 60 * 1000);
 }
-
 function checkAndNotify() {
-  if (!notifEnabled) return;
-  const t = today();
-  const active = items.filter(i => !i.done);
-  const overdue = active.filter(i => i.date < t);
-  const todayItems = active.filter(i => i.date === t);
+  if (Notification.permission !== 'granted') return;
+  const tn = today();
+  const ov = items.filter(i => !i.done && i.date < tn);
+  const td = items.filter(i => !i.done && i.date === tn);
+  if (ov.length) new Notification(`⚠️ ${ov.length} ${t('notif_overdue')}`, { body: ov.slice(0,3).map(i=>`• ${i.name}`).join('\n') });
+  if (td.length) setTimeout(() => new Notification(`📅 ${td.length} ${t('notif_today')}`, { body: td.slice(0,3).map(i=>`• ${i.name}`).join('\n') }), 900);
+}
 
-  if (overdue.length > 0) {
-    new Notification(`⚠️ ${overdue.length} follow-up(s) atrasados`, {
-      body: overdue.slice(0,3).map(i => `• ${i.name}${i.company ? ' – ' + i.company : ''}`).join('\n'),
-      icon: 'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/72x72/26a0.png'
-    });
+/* ── Utils ── */
+function today() { return new Date().toISOString().split('T')[0]; }
+function addDays(ds, n) { const d = new Date(ds+'T00:00:00'); d.setDate(d.getDate()+n); return d.toISOString().split('T')[0]; }
+function fmtDate(ds) { if (!ds) return '—'; const [y,m,d] = ds.split('-'); return `${d}/${m}/${y}`; }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showToast(msg) { const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2800); }
+function setSyncState(st, label) {
+  const d = document.getElementById('sync-dot');
+  d.className = 'sync-dot' + (st === 'busy' ? ' busy' : st === 'err' ? ' err' : '');
+  document.getElementById('sync-label').textContent = label;
+}
+function setFilter(btn) {
+  document.querySelectorAll('.fil-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); currentFilter = btn.dataset.filter; render();
+}
+document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('modal-overlay')) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+document.getElementById('seller-input').addEventListener('keydown', e => { if (e.key === 'Enter') enterApp(); });
+
+/* ── Init ── */
+setLang(lang);
+if (seller) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('seller-chip').textContent = '👤 ' + seller;
+  if (API_URL === 'COLE_A_URL_DO_WEB_APP_AQUI') {
+    document.getElementById('cfg-banner').style.display = 'block';
+    document.getElementById('cfg-banner').innerHTML = '⚠️ ' + t('cfg_warn');
   }
-  if (todayItems.length > 0) {
-    setTimeout(() => {
-      new Notification(`📅 ${todayItems.length} follow-up(s) para hoje`, {
-        body: todayItems.slice(0,3).map(i => `• ${i.name}${i.company ? ' – ' + i.company : ''}`).join('\n'),
-        icon: 'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/72x72/1f4c5.png'
-      });
-    }, 800);
-  }
+  loadItems();
+  requestNotifications();
+} else {
+  document.getElementById('seller-input').focus();
 }
-
-document.getElementById('modal').addEventListener('click', e => {
-  if (e.target === document.getElementById('modal')) closeModal();
-});
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeModal();
-});
-
-if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-  setTimeout(() => {
-    document.getElementById('notif-banner').style.display = 'flex';
-  }, 1200);
-} else if (Notification.permission === 'granted') {
-  document.getElementById('notif-btn').classList.add('active');
-  notifEnabled = true;
-}
-
-render();
-
-if (notifEnabled) {
-  setTimeout(checkAndNotify, 2000);
-}
-
-setInterval(() => {
-  if (notifEnabled) checkAndNotify();
-}, 30 * 60 * 1000);
 </script>
 </body>
 </html>
