@@ -284,7 +284,7 @@ textarea { resize:vertical; min-height:60px; }
 /* ═══════════════════════════════════════════════
    ⚙️  CONFIGURAÇÃO
    ═══════════════════════════════════════════════ */
-const API_URL    = 'https://script.google.com/macros/s/AKfycbw-Rq6KoiLX0RVycrxFUCWke4TRAJCTTOMzHG6N0Uv2_9kk_uWMePvD0nW-v2W-dl3z/exec';
+const API_URL    = 'https://script.google.com/macros/s/AKfycbw4yfpGvGqCX-096yS96Fl7ZWXyKp40nU0AwvAGGear5opQ_yPDWMbnGBxnnvyGKC2h/exec';
 const SECRET_KEY = 'acx_fup_manager';
 /* ═══════════════════════════════════════════════ */
 
@@ -303,10 +303,9 @@ async function hashPassword(pass) {
 async function api(action, payload={}) {
   setSyncState('busy','Syncing…');
   try {
-    const res  = await fetch(API_URL, {
-      method:'POST', headers:{'Content-Type':'text/plain'},
-      body: JSON.stringify({ action, key: SECRET_KEY, adminSeller, ...payload })
-    });
+    const body = JSON.stringify({ action, key: SECRET_KEY, adminSeller, ...payload });
+    const url  = API_URL + '?data=' + encodeURIComponent(body);
+    const res  = await fetch(url);
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || 'API error');
     return data;
@@ -329,10 +328,8 @@ async function doLogin() {
   btn.disabled = true; btn.textContent = '…';
   try {
     const hash = await hashPassword(pass);
-    const res  = await fetch(API_URL, {
-      method:'POST', headers:{'Content-Type':'text/plain'},
-      body: JSON.stringify({ action:'login', key:SECRET_KEY, seller:name, passwordHash:hash })
-    });
+    const body = JSON.stringify({ action:'login', key:SECRET_KEY, seller:name, passwordHash:hash });
+    const res  = await fetch(API_URL + '?data=' + encodeURIComponent(body));
     const data = await res.json();
     if (!data.ok) throw new Error(data.error);
     if (data.role !== 'admin') throw new Error('not_admin');
