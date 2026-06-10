@@ -298,7 +298,7 @@ function enterApp(name) {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   document.getElementById('seller-chip').textContent = '👤 ' + seller;
-  if (API_URL === 'COLE_A_URL_DO_WEB_APP_AQUI') {
+  if (API_URL === 'https://script.google.com/macros/s/AKfycbzWUmDm_sHxO9pPF3t2yN8zgSD4h3uNuUD03LG935IYIs8hMbAFE_KeNSjgPWllm3Bq/exec') {
     const b = document.getElementById('cfg-banner');
     b.style.display='block'; b.innerHTML='⚠️ ' + t('cfg_warn');
   }
@@ -319,7 +319,7 @@ function doLogout() {
 
 // ── Carregar dados ────────────────────────────────────────────
 async function loadItems(manual=false) {
-  if (API_URL === 'COLE_A_URL_DO_WEB_APP_AQUI') {
+  if (API_URL === 'https://script.google.com/macros/s/AKfycbzWUmDm_sHxO9pPF3t2yN8zgSD4h3uNuUD03LG935IYIs8hMbAFE_KeNSjgPWllm3Bq/exec') {
     setSyncState('err', t('sync_err'));
     document.getElementById('table-wrap').innerHTML =
       `<div class="empty-state"><div class="empty-icon">⚙️</div><div class="empty-title">${t('cfg_warn')}</div></div>`;
