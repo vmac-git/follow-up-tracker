@@ -19,19 +19,29 @@
 }
 body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:14px; line-height:1.6; }
 
-/* ── Login ── */
-#login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
-.login-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:40px 36px; max-width:400px; width:100%; text-align:center; box-shadow:0 2px 16px rgba(0,0,0,0.07); }
-.login-icon { font-size:36px; margin-bottom:16px; }
-.login-title { font-size:22px; font-weight:600; margin-bottom:6px; }
-.login-sub { color:var(--muted); font-size:13px; margin-bottom:28px; line-height:1.6; }
-.lang-row { display:flex; gap:8px; justify-content:center; margin-bottom:24px; }
+/* ── Auth screen ── */
+#auth-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
+.auth-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:36px 32px; max-width:400px; width:100%; text-align:center; box-shadow:0 2px 16px rgba(0,0,0,0.07); }
+.auth-icon { font-size:34px; margin-bottom:14px; }
+.auth-title { font-size:21px; font-weight:600; margin-bottom:5px; }
+.auth-sub { color:var(--muted); font-size:13px; margin-bottom:24px; line-height:1.6; }
+.lang-row { display:flex; gap:8px; justify-content:center; margin-bottom:22px; }
 .lang-btn { padding:4px 14px; border:1px solid var(--border); border-radius:99px; background:transparent; font-family:inherit; font-size:12px; font-weight:500; cursor:pointer; color:var(--muted); transition:all .12s; }
 .lang-btn.active { background:var(--text); color:#fff; border-color:var(--text); }
-.name-input { width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:var(--rs); font-family:inherit; font-size:15px; background:var(--bg); color:var(--text); outline:none; text-align:center; margin-bottom:12px; transition:border-color .12s; }
-.name-input:focus { border-color:var(--accent); background:var(--surface); }
-.btn-enter { width:100%; padding:11px; border:none; border-radius:var(--rs); background:var(--accent); color:#fff; font-size:14px; font-weight:500; cursor:pointer; font-family:inherit; transition:opacity .15s; }
-.btn-enter:hover { opacity:.88; }
+
+/* tabs */
+.auth-tabs { display:flex; border-bottom:1px solid var(--border); margin-bottom:22px; }
+.auth-tab { flex:1; padding:8px; font-family:inherit; font-size:13px; font-weight:500; border:none; background:transparent; cursor:pointer; color:var(--muted); border-bottom:2px solid transparent; margin-bottom:-1px; transition:all .15s; }
+.auth-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+.auth-input { width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:var(--rs); font-family:inherit; font-size:14px; background:var(--bg); color:var(--text); outline:none; margin-bottom:10px; transition:border-color .12s; }
+.auth-input:focus { border-color:var(--accent); background:var(--surface); }
+.auth-input.error { border-color:var(--danger); }
+.auth-error { font-size:12px; color:var(--danger); margin-bottom:10px; min-height:18px; text-align:left; }
+.btn-auth { width:100%; padding:11px; border:none; border-radius:var(--rs); background:var(--accent); color:#fff; font-size:14px; font-weight:500; cursor:pointer; font-family:inherit; transition:opacity .15s; }
+.btn-auth:hover { opacity:.88; }
+.btn-auth:disabled { opacity:.5; cursor:not-allowed; }
+.auth-hint { font-size:12px; color:var(--muted); margin-top:14px; line-height:1.5; }
 
 /* ── App ── */
 #app { display:none; }
@@ -47,34 +57,27 @@ header { background:var(--surface); border-bottom:1px solid var(--border); paddi
 .btn-primary:disabled { opacity:.5; cursor:not-allowed; }
 
 main { max-width:1080px; margin:0 auto; padding:20px 16px 80px; }
-
-/* Config banner */
 #cfg-banner { background:#FEF3C7; border:1px solid #F59E0B; border-radius:var(--rs); padding:11px 14px; margin-bottom:16px; font-size:13px; color:#92400E; display:none; }
 #cfg-banner code { background:rgba(0,0,0,.08); padding:1px 5px; border-radius:3px; font-size:11px; }
 
-/* Sync */
 .sync-row { display:flex; align-items:center; gap:7px; margin-bottom:16px; font-size:12px; color:var(--muted); }
 .sync-dot { width:7px; height:7px; border-radius:50%; background:var(--ok); flex-shrink:0; }
 .sync-dot.busy { background:var(--warn); animation:pulse 1s infinite; }
 .sync-dot.err  { background:var(--danger); }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
 
-/* Stats */
 .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px; }
 .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:13px 15px; }
 .stat-label { font-size:11px; color:var(--muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:.04em; font-weight:500; }
 .stat-val { font-size:24px; font-weight:600; line-height:1; }
-.c-danger { color:var(--danger); } .c-warn { color:var(--warn); } .c-accent { color:var(--accent); } .c-ok { color:var(--ok); }
+.c-danger{color:var(--danger)} .c-warn{color:var(--warn)} .c-accent{color:var(--accent)} .c-ok{color:var(--ok)}
 
-/* Section */
 .sec-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
 .sec-title { font-size:14px; font-weight:600; display:flex; align-items:center; gap:7px; }
 .badge { font-size:11px; font-weight:600; padding:2px 7px; border-radius:99px; }
-.bd { background:var(--danger-light); color:var(--danger); }
-.bw { background:var(--warn-light);   color:var(--warn); }
-.ba { background:var(--accent-light); color:var(--accent); }
-.bs { background:var(--ok-light);     color:var(--ok); }
-.bm { background:#F0EEE8; color:var(--muted); }
+.bd{background:var(--danger-light);color:var(--danger)} .bw{background:var(--warn-light);color:var(--warn)}
+.ba{background:var(--accent-light);color:var(--accent)} .bs{background:var(--ok-light);color:var(--ok)}
+.bm{background:#F0EEE8;color:var(--muted)}
 
 .controls { display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
 .search-inp { padding:5px 10px; border:1px solid var(--border); border-radius:var(--rs); font-family:inherit; font-size:13px; background:var(--surface); color:var(--text); outline:none; width:190px; }
@@ -83,70 +86,64 @@ main { max-width:1080px; margin:0 auto; padding:20px 16px 80px; }
 .fil-btn:hover { background:var(--bg); }
 .fil-btn.active { background:var(--text); color:#fff; border-color:var(--text); }
 
-/* Table */
 table { width:100%; border-collapse:collapse; background:var(--surface); border-radius:var(--r); overflow:hidden; border:1px solid var(--border); }
 thead th { text-align:left; padding:9px 13px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); background:var(--bg); border-bottom:1px solid var(--border); }
 tbody tr { border-bottom:1px solid var(--border); transition:background .1s; }
 tbody tr:last-child { border-bottom:none; }
 tbody tr:hover { background:#FAFAF8; }
 td { padding:10px 13px; vertical-align:middle; }
-.name-cell { font-weight:500; }
-.sub-cell { color:var(--muted); font-size:12px; }
-.type-pill { font-size:11px; font-weight:600; padding:2px 8px; border-radius:4px; white-space:nowrap; }
-.tp-trial { background:#EDE9FE; color:#5B21B6; }
-.tp-sale  { background:#DCFCE7; color:#166534; }
-.tp-demo  { background:#FEF3C7; color:#92400E; }
-.tp-renew { background:#DBEAFE; color:#1E40AF; }
-.actions { display:flex; align-items:center; gap:5px; }
-.icon-btn { width:27px; height:27px; display:flex; align-items:center; justify-content:center; border:1px solid var(--border); border-radius:var(--rs); background:transparent; cursor:pointer; font-size:13px; transition:all .12s; color:var(--muted); }
-.icon-btn:hover { background:var(--bg); color:var(--text); }
-.ib-done:hover   { background:var(--ok-light);     color:var(--ok);     border-color:var(--ok); }
-.ib-delete:hover { background:var(--danger-light); color:var(--danger); border-color:var(--danger); }
+.name-cell{font-weight:500} .sub-cell{color:var(--muted);font-size:12px}
+.type-pill{font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.tp-trial{background:#EDE9FE;color:#5B21B6} .tp-sale{background:#DCFCE7;color:#166534}
+.tp-demo{background:#FEF3C7;color:#92400E}  .tp-renew{background:#DBEAFE;color:#1E40AF}
+.actions{display:flex;align-items:center;gap:5px}
+.icon-btn{width:27px;height:27px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:var(--rs);background:transparent;cursor:pointer;font-size:13px;transition:all .12s;color:var(--muted)}
+.icon-btn:hover{background:var(--bg);color:var(--text)}
+.ib-done:hover{background:var(--ok-light);color:var(--ok);border-color:var(--ok)}
+.ib-delete:hover{background:var(--danger-light);color:var(--danger);border-color:var(--danger)}
 
-.empty-state, .loading-state { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:44px 24px; text-align:center; color:var(--muted); }
-.empty-icon { font-size:28px; margin-bottom:10px; }
-.empty-title { font-weight:600; color:var(--text); margin-bottom:4px; font-size:14px; }
+.empty-state,.loading-state{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:44px 24px;text-align:center;color:var(--muted)}
+.empty-icon{font-size:28px;margin-bottom:10px}
+.empty-title{font-weight:600;color:var(--text);margin-bottom:4px;font-size:14px}
 
-/* Modal */
-.overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.35); z-index:200; align-items:center; justify-content:center; }
-.overlay.open { display:flex; }
-.modal { background:var(--surface); border-radius:var(--r); padding:22px; width:100%; max-width:480px; margin:20px; box-shadow:0 8px 32px rgba(0,0,0,.18); max-height:90vh; overflow-y:auto; }
-.modal-title { font-size:16px; font-weight:600; margin-bottom:18px; }
-.frow { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.fg { margin-bottom:12px; }
-.fg.full { grid-column:1/-1; }
-label { display:block; font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin-bottom:4px; }
-input[type=text],input[type=email],input[type=date],select,textarea { width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:var(--rs); font-family:inherit; font-size:14px; background:var(--bg); color:var(--text); outline:none; transition:border-color .12s; }
-input:focus,select:focus,textarea:focus { border-color:var(--accent); background:var(--surface); }
-textarea { resize:vertical; min-height:66px; }
-.modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:18px; padding-top:14px; border-top:1px solid var(--border); }
-.btn-ghost { padding:7px 13px; border:1px solid var(--border); border-radius:var(--rs); background:transparent; color:var(--muted); font-size:13px; cursor:pointer; font-family:inherit; transition:all .12s; }
-.btn-ghost:hover { background:var(--bg); color:var(--text); }
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;align-items:center;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--r);padding:22px;width:100%;max-width:480px;margin:20px;box-shadow:0 8px 32px rgba(0,0,0,.18);max-height:90vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:18px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg{margin-bottom:12px} .fg.full{grid-column:1/-1}
+label{display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+input[type=text],input[type=email],input[type=date],input[type=password],select,textarea{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--rs);font-family:inherit;font-size:14px;background:var(--bg);color:var(--text);outline:none;transition:border-color .12s}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);background:var(--surface)}
+textarea{resize:vertical;min-height:66px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+.btn-ghost{padding:7px 13px;border:1px solid var(--border);border-radius:var(--rs);background:transparent;color:var(--muted);font-size:13px;cursor:pointer;font-family:inherit;transition:all .12s}
+.btn-ghost:hover{background:var(--bg);color:var(--text)}
 
-#toast { position:fixed; bottom:22px; right:22px; background:var(--text); color:#fff; padding:9px 15px; border-radius:var(--rs); font-size:13px; font-weight:500; opacity:0; transform:translateY(8px); transition:all .22s; z-index:999; pointer-events:none; max-width:300px; }
-#toast.show { opacity:1; transform:translateY(0); }
+#toast{position:fixed;bottom:22px;right:22px;background:var(--text);color:#fff;padding:9px 15px;border-radius:var(--rs);font-size:13px;font-weight:500;opacity:0;transform:translateY(8px);transition:all .22s;z-index:999;pointer-events:none;max-width:300px}
+#toast.show{opacity:1;transform:translateY(0)}
 
 @media(max-width:680px){
-  .stats-row { grid-template-columns:repeat(2,1fr); }
-  .frow { grid-template-columns:1fr; }
-  table thead { display:none; }
-  table,tbody,tr,td { display:block; }
-  tr { padding:11px 13px; border-bottom:1px solid var(--border); }
-  td { padding:2px 0; border:none; }
-  td::before { content:attr(data-label); font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; display:block; }
-  .search-inp { width:130px; }
-  .header-right { gap:5px; }
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .frow{grid-template-columns:1fr}
+  table thead{display:none}
+  table,tbody,tr,td{display:block}
+  tr{padding:11px 13px;border-bottom:1px solid var(--border)}
+  td{padding:2px 0;border:none}
+  td::before{content:attr(data-label);font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;display:block}
+  .search-inp{width:130px}
+  .header-right{gap:5px}
 }
 </style>
 </head>
 <body>
 
-<!-- ══ LOGIN ══ -->
-<div id="login-screen">
-  <div class="login-card">
-    <div class="login-icon">📋</div>
-    <div class="login-title" id="lt">Follow-up Tracker</div>
-    <div class="login-sub" id="ls">Track your sales follow-ups and trial accounts in one place.</div>
+<!-- ══ AUTH SCREEN ══ -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-icon">📋</div>
+    <div class="auth-title">Follow-up Tracker</div>
+    <div class="auth-sub" id="auth-sub">Track your sales follow-ups and trials in one place.</div>
 
     <div class="lang-row">
       <button class="lang-btn" onclick="setLang('pt')">🇧🇷 PT</button>
@@ -154,8 +151,29 @@ textarea { resize:vertical; min-height:66px; }
       <button class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
     </div>
 
-    <input class="name-input" type="text" id="seller-input" maxlength="60" placeholder="Your name…">
-    <button class="btn-enter" onclick="enterApp()" id="enter-btn">Enter →</button>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login"    onclick="switchTab('login')"    data-i="tab_login">Sign in</button>
+      <button class="auth-tab"        id="tab-register" onclick="switchTab('register')" data-i="tab_register">Create account</button>
+    </div>
+
+    <!-- Login -->
+    <div id="panel-login">
+      <input class="auth-input" type="text"     id="login-name" data-placeholder-i="ph_name" placeholder="Your name…" autocomplete="username">
+      <input class="auth-input" type="password" id="login-pass" data-placeholder-i="ph_pass" placeholder="Password"    autocomplete="current-password">
+      <div class="auth-error" id="login-error"></div>
+      <button class="btn-auth" id="btn-login" onclick="doLogin()" data-i="btn_login">Sign in</button>
+    </div>
+
+    <!-- Register -->
+    <div id="panel-register" style="display:none">
+      <input class="auth-input" type="text"     id="reg-name"  data-placeholder-i="ph_name"      placeholder="Your name…"       autocomplete="username">
+      <input class="auth-input" type="password" id="reg-pass"  data-placeholder-i="ph_new_pass"  placeholder="Create password"  autocomplete="new-password">
+      <input class="auth-input" type="password" id="reg-pass2" data-placeholder-i="ph_conf_pass" placeholder="Confirm password" autocomplete="new-password">
+      <div class="auth-error" id="reg-error"></div>
+      <button class="btn-auth" id="btn-register" onclick="doRegister()" data-i="btn_register">Create account</button>
+      <div class="auth-hint" data-i="register_hint">You only need to do this once. Use the same name to sign in later.</div>
+    </div>
+
   </div>
 </div>
 
@@ -170,15 +188,13 @@ textarea { resize:vertical; min-height:66px; }
         <button class="lang-btn" onclick="setLang('en')">EN</button>
         <button class="lang-btn" onclick="setLang('es')">ES</button>
       </div>
-      <button class="btn-sm" onclick="changeSeller()" id="btn-change">Change</button>
+      <button class="btn-sm" onclick="doLogout()" data-i="btn_logout">Sign out</button>
       <button class="btn-primary" onclick="openModal()" id="btn-new">+ New</button>
     </div>
   </header>
 
   <main>
-    <div id="cfg-banner">
-      ⚠️ <strong>Setup needed:</strong> edit <code>API_URL</code> and <code>SECRET_KEY</code> at the top of this file.
-    </div>
+    <div id="cfg-banner"></div>
 
     <div class="sync-row">
       <div class="sync-dot" id="sync-dot"></div>
@@ -199,11 +215,11 @@ textarea { resize:vertical; min-height:66px; }
       </div>
       <div class="controls">
         <input class="search-inp" type="text" id="search" oninput="render()" data-placeholder-i="search_ph">
-        <button class="fil-btn active" data-filter="all"      onclick="setFilter(this)" data-i="f_all">All</button>
-        <button class="fil-btn"        data-filter="overdue"  onclick="setFilter(this)" data-i="f_overdue">Overdue</button>
-        <button class="fil-btn"        data-filter="today"    onclick="setFilter(this)" data-i="f_today">Today</button>
-        <button class="fil-btn"        data-filter="soon"     onclick="setFilter(this)" data-i="f_soon">Soon</button>
-        <button class="btn-sm" onclick="loadItems(true)" data-i="refresh">↻ Refresh</button>
+        <button class="fil-btn active" data-filter="all"     onclick="setFilter(this)" data-i="f_all">All</button>
+        <button class="fil-btn" data-filter="overdue"        onclick="setFilter(this)" data-i="f_overdue">Overdue</button>
+        <button class="fil-btn" data-filter="today"          onclick="setFilter(this)" data-i="f_today">Today</button>
+        <button class="fil-btn" data-filter="soon"           onclick="setFilter(this)" data-i="f_soon">Soon</button>
+        <button class="btn-sm"  onclick="loadItems(true)"    data-i="refresh">↻ Refresh</button>
       </div>
     </div>
 
@@ -213,48 +229,29 @@ textarea { resize:vertical; min-height:66px; }
   </main>
 </div>
 
-<!-- Modal -->
+<!-- Follow-up Modal -->
 <div class="overlay" id="modal-overlay">
   <div class="modal">
-    <div class="modal-title" id="modal-title">New follow-up</div>
+    <div class="modal-title" id="modal-title"></div>
     <div class="frow">
-      <div class="fg">
-        <label data-i="lbl_name">Contact name *</label>
-        <input type="text" id="f-name" data-placeholder-i="ph_name">
-      </div>
-      <div class="fg">
-        <label data-i="lbl_company">Company</label>
-        <input type="text" id="f-company" data-placeholder-i="ph_company">
-      </div>
-      <div class="fg">
-        <label data-i="lbl_email">Email</label>
-        <input type="email" id="f-email" placeholder="contact@company.com">
-      </div>
-      <div class="fg">
-        <label data-i="lbl_type">Type</label>
+      <div class="fg"><label data-i="lbl_name">Contact name *</label><input type="text" id="f-name" data-placeholder-i="ph_contact"></div>
+      <div class="fg"><label data-i="lbl_company">Company</label><input type="text" id="f-company" placeholder="Acme Corp"></div>
+      <div class="fg"><label data-i="lbl_email">Email</label><input type="email" id="f-email" placeholder="contact@company.com"></div>
+      <div class="fg"><label data-i="lbl_type">Type</label>
         <select id="f-type">
           <option value="Trial">Trial</option>
-          <option value="Sale" data-i-opt="type_sale">Sale</option>
+          <option value="Sale"      data-i-opt="type_sale">Sale</option>
           <option value="Demo">Demo</option>
-          <option value="Renewal" data-i-opt="type_renewal">Renewal</option>
+          <option value="Renewal"   data-i-opt="type_renewal">Renewal</option>
         </select>
       </div>
-      <div class="fg">
-        <label data-i="lbl_date">Follow-up date *</label>
-        <input type="date" id="f-date">
-      </div>
-      <div class="fg">
-        <label data-i="lbl_value">Est. value</label>
-        <input type="text" id="f-value" placeholder="5,000">
-      </div>
-      <div class="fg full">
-        <label data-i="lbl_notes">Notes</label>
-        <textarea id="f-notes" data-placeholder-i="ph_notes"></textarea>
-      </div>
+      <div class="fg"><label data-i="lbl_date">Follow-up date *</label><input type="date" id="f-date"></div>
+      <div class="fg"><label data-i="lbl_value">Est. value</label><input type="text" id="f-value" placeholder="5,000"></div>
+      <div class="fg full"><label data-i="lbl_notes">Notes</label><textarea id="f-notes" data-placeholder-i="ph_notes"></textarea></div>
     </div>
     <div class="modal-actions">
       <button class="btn-ghost" onclick="closeModal()" data-i="cancel">Cancel</button>
-      <button class="btn-primary" id="save-btn" onclick="saveItem()" data-i="save_btn">Save follow-up</button>
+      <button class="btn-primary" id="save-btn" onclick="saveItem()" data-i="save_btn">Save</button>
     </div>
   </div>
 </div>
@@ -262,84 +259,105 @@ textarea { resize:vertical; min-height:66px; }
 <div id="toast"></div>
 
 <script>
-/* ═══════════════════════════════════════════════════════
-   ⚙️  CONFIGURAÇÃO — edite estas 2 variáveis
-   ═══════════════════════════════════════════════════════ */
-const API_URL    = 'https://script.google.com/macros/s/AKfycbwRsL2mS7W7ZvygfSVPyG9pF3zK5QZ0Eg3G5HvNvvsIFxCtNSMAB6OtEVAAA_OvKITh/exec';
-const SECRET_KEY = 'acx_fup_manager'; // igual ao que está no Apps Script
-/* ═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   ⚙️  CONFIGURAÇÃO
+   ═══════════════════════════════════════════════ */
+const API_URL    = 'COLE_A_URL_DO_WEB_APP_AQUI';
+const SECRET_KEY = 'TROQUE_ESTA_CHAVE';
+/* ═══════════════════════════════════════════════ */
 
-/* ── i18n ─────────────────────────────────────────────── */
+/* ── i18n ── */
 const T = {
-  en: {
-    login_sub:'Track your sales follow-ups and trial accounts in one place.',
-    login_ph:'Your name…', enter_btn:'Enter →',
+  en:{
+    auth_sub:'Track your sales follow-ups and trials in one place.',
+    tab_login:'Sign in', tab_register:'Create account',
+    ph_name:'Your name', ph_pass:'Password', ph_new_pass:'Create password', ph_conf_pass:'Confirm password',
+    btn_login:'Sign in', btn_register:'Create account',
+    register_hint:'You only need to do this once. Use the same name to sign in later.',
+    err_fill:'Please fill in all fields.', err_pass_match:'Passwords do not match.',
+    err_pass_short:'Password must be at least 4 characters.',
+    err_user_exists:'This name is already registered. Sign in instead.',
+    err_not_found:'Name not found. Create an account first.',
+    err_wrong_pass:'Incorrect password.', err_api:'Connection error. Check API_URL.',
+    btn_logout:'Sign out',
     stat_overdue:'Overdue', stat_today:'Today', stat_soon:'Next 7 days', stat_total:'Active total',
     my_followups:'My follow-ups', search_ph:'Search…',
     f_all:'All', f_overdue:'Overdue', f_today:'Today', f_soon:'Soon', refresh:'↻ Refresh',
     lbl_name:'Contact name *', lbl_company:'Company', lbl_email:'Email', lbl_type:'Type',
     lbl_date:'Follow-up date *', lbl_value:'Est. value', lbl_notes:'Notes',
-    ph_name:'John Smith', ph_company:'Acme Corp', ph_notes:'Context, next steps…',
+    ph_contact:'John Smith', ph_notes:'Context, next steps…',
     cancel:'Cancel', save_btn:'Save follow-up',
     type_sale:'Sale', type_renewal:'Renewal',
     modal_new:'New follow-up', modal_edit:'Edit follow-up',
-    change_btn:'Change', synced:'Synced', syncing:'Syncing…', sync_err:'Sync error',
-    saving:'Saving…', deleting:'Removing…',
-    toast_saved:'✅ Follow-up saved!', toast_updated:'✏️ Follow-up updated!',
-    toast_deleted:'🗑️ Removed!', toast_done:'✅ Done!', toast_reopened:'↩️ Reopened!',
-    toast_err_name:'⚠️ Contact name is required.', toast_err_date:'⚠️ Choose a follow-up date.',
-    toast_err_api:'❌ Error connecting. Check the API_URL.', toast_err_save:'❌ Error saving. Try again.',
-    confirm_delete:'Remove this follow-up?',
+    synced:'Synced', syncing:'Syncing…', sync_err:'Sync error', saving:'Saving…',
+    toast_saved:'✅ Saved!', toast_updated:'✏️ Updated!', toast_deleted:'🗑️ Removed!',
+    toast_done:'✅ Done!', toast_reopened:'↩️ Reopened!',
+    toast_err_name:'⚠️ Contact name is required.', toast_err_date:'⚠️ Choose a date.',
+    toast_err_save:'❌ Error saving. Try again.', confirm_delete:'Remove this follow-up?',
     badge_overdue:'Overdue', badge_today:'Today', badge_soon:'Soon', badge_scheduled:'Scheduled', badge_done:'Done',
     col_contact:'Contact', col_type:'Type', col_date:'Date', col_status:'Status', col_value:'Value', col_notes:'Notes', col_actions:'Actions',
     empty_title:'No follow-ups found', empty_sub:'Add a new one or change the filter.',
     loading:'Loading…', notif_overdue:'follow-up(s) overdue', notif_today:'follow-up(s) for today',
     cfg_warn:'Setup needed: edit <code>API_URL</code> and <code>SECRET_KEY</code> at the top of this file.',
   },
-  pt: {
-    login_sub:'Acompanhe seus follow-ups de vendas e trials em um só lugar.',
-    login_ph:'Seu nome…', enter_btn:'Entrar →',
+  pt:{
+    auth_sub:'Acompanhe seus follow-ups de vendas e trials em um só lugar.',
+    tab_login:'Entrar', tab_register:'Criar conta',
+    ph_name:'Seu nome', ph_pass:'Senha', ph_new_pass:'Criar senha', ph_conf_pass:'Confirmar senha',
+    btn_login:'Entrar', btn_register:'Criar conta',
+    register_hint:'Você só faz isso uma vez. Use o mesmo nome para entrar depois.',
+    err_fill:'Preencha todos os campos.', err_pass_match:'As senhas não coincidem.',
+    err_pass_short:'A senha precisa ter pelo menos 4 caracteres.',
+    err_user_exists:'Este nome já está cadastrado. Faça login.',
+    err_not_found:'Nome não encontrado. Crie uma conta primeiro.',
+    err_wrong_pass:'Senha incorreta.', err_api:'Erro de conexão. Verifique a API_URL.',
+    btn_logout:'Sair',
     stat_overdue:'Atrasados', stat_today:'Hoje', stat_soon:'Próx. 7 dias', stat_total:'Total ativo',
     my_followups:'Meus follow-ups', search_ph:'Buscar…',
     f_all:'Todos', f_overdue:'Atrasados', f_today:'Hoje', f_soon:'Em breve', refresh:'↻ Atualizar',
     lbl_name:'Nome do contato *', lbl_company:'Empresa', lbl_email:'E-mail', lbl_type:'Tipo',
     lbl_date:'Data do follow-up *', lbl_value:'Valor estimado', lbl_notes:'Observações',
-    ph_name:'João Silva', ph_company:'Acme Corp', ph_notes:'Contexto, próximos passos…',
+    ph_contact:'João Silva', ph_notes:'Contexto, próximos passos…',
     cancel:'Cancelar', save_btn:'Salvar follow-up',
     type_sale:'Venda', type_renewal:'Renovação',
     modal_new:'Novo follow-up', modal_edit:'Editar follow-up',
-    change_btn:'Trocar', synced:'Sincronizado', syncing:'Sincronizando…', sync_err:'Erro ao sincronizar',
-    saving:'Salvando…', deleting:'Removendo…',
-    toast_saved:'✅ Follow-up adicionado!', toast_updated:'✏️ Follow-up atualizado!',
-    toast_deleted:'🗑️ Removido!', toast_done:'✅ Concluído!', toast_reopened:'↩️ Reaberto!',
-    toast_err_name:'⚠️ Informe o nome do contato.', toast_err_date:'⚠️ Escolha a data do follow-up.',
-    toast_err_api:'❌ Erro ao conectar. Verifique a API_URL.', toast_err_save:'❌ Erro ao salvar. Tente novamente.',
-    confirm_delete:'Remover este follow-up?',
+    synced:'Sincronizado', syncing:'Sincronizando…', sync_err:'Erro ao sincronizar', saving:'Salvando…',
+    toast_saved:'✅ Salvo!', toast_updated:'✏️ Atualizado!', toast_deleted:'🗑️ Removido!',
+    toast_done:'✅ Concluído!', toast_reopened:'↩️ Reaberto!',
+    toast_err_name:'⚠️ Informe o nome do contato.', toast_err_date:'⚠️ Escolha uma data.',
+    toast_err_save:'❌ Erro ao salvar. Tente novamente.', confirm_delete:'Remover este follow-up?',
     badge_overdue:'Atrasado', badge_today:'Hoje', badge_soon:'Em breve', badge_scheduled:'Agendado', badge_done:'Concluído',
     col_contact:'Contato', col_type:'Tipo', col_date:'Data', col_status:'Status', col_value:'Valor', col_notes:'Obs', col_actions:'Ações',
     empty_title:'Nenhum follow-up encontrado', empty_sub:'Adicione um novo ou mude o filtro.',
     loading:'Carregando…', notif_overdue:'follow-up(s) atrasados', notif_today:'follow-up(s) para hoje',
     cfg_warn:'Configuração necessária: edite <code>API_URL</code> e <code>SECRET_KEY</code> no topo do arquivo.',
   },
-  es: {
-    login_sub:'Lleva el seguimiento de tus follow-ups de ventas y trials en un solo lugar.',
-    login_ph:'Tu nombre…', enter_btn:'Entrar →',
+  es:{
+    auth_sub:'Lleva el seguimiento de tus follow-ups de ventas y trials en un solo lugar.',
+    tab_login:'Iniciar sesión', tab_register:'Crear cuenta',
+    ph_name:'Tu nombre', ph_pass:'Contraseña', ph_new_pass:'Crear contraseña', ph_conf_pass:'Confirmar contraseña',
+    btn_login:'Iniciar sesión', btn_register:'Crear cuenta',
+    register_hint:'Solo lo haces una vez. Usa el mismo nombre para entrar después.',
+    err_fill:'Por favor completa todos los campos.', err_pass_match:'Las contraseñas no coinciden.',
+    err_pass_short:'La contraseña debe tener al menos 4 caracteres.',
+    err_user_exists:'Este nombre ya está registrado. Inicia sesión.',
+    err_not_found:'Nombre no encontrado. Crea una cuenta primero.',
+    err_wrong_pass:'Contraseña incorrecta.', err_api:'Error de conexión. Verifica la API_URL.',
+    btn_logout:'Cerrar sesión',
     stat_overdue:'Atrasados', stat_today:'Hoy', stat_soon:'Próx. 7 días', stat_total:'Total activo',
     my_followups:'Mis follow-ups', search_ph:'Buscar…',
     f_all:'Todos', f_overdue:'Atrasados', f_today:'Hoy', f_soon:'Próximos', refresh:'↻ Actualizar',
     lbl_name:'Nombre del contacto *', lbl_company:'Empresa', lbl_email:'Email', lbl_type:'Tipo',
     lbl_date:'Fecha del follow-up *', lbl_value:'Valor estimado', lbl_notes:'Observaciones',
-    ph_name:'Juan García', ph_company:'Acme Corp', ph_notes:'Contexto, próximos pasos…',
+    ph_contact:'Juan García', ph_notes:'Contexto, próximos pasos…',
     cancel:'Cancelar', save_btn:'Guardar follow-up',
     type_sale:'Venta', type_renewal:'Renovación',
     modal_new:'Nuevo follow-up', modal_edit:'Editar follow-up',
-    change_btn:'Cambiar', synced:'Sincronizado', syncing:'Sincronizando…', sync_err:'Error al sincronizar',
-    saving:'Guardando…', deleting:'Eliminando…',
-    toast_saved:'✅ Follow-up guardado!', toast_updated:'✏️ Follow-up actualizado!',
-    toast_deleted:'🗑️ Eliminado!', toast_done:'✅ Completado!', toast_reopened:'↩️ Reabierto!',
-    toast_err_name:'⚠️ Ingresa el nombre del contacto.', toast_err_date:'⚠️ Elige la fecha del follow-up.',
-    toast_err_api:'❌ Error al conectar. Verifica la API_URL.', toast_err_save:'❌ Error al guardar. Inténtalo de nuevo.',
-    confirm_delete:'¿Eliminar este follow-up?',
+    synced:'Sincronizado', syncing:'Sincronizando…', sync_err:'Error al sincronizar', saving:'Guardando…',
+    toast_saved:'✅ Guardado!', toast_updated:'✏️ Actualizado!', toast_deleted:'🗑️ Eliminado!',
+    toast_done:'✅ Completado!', toast_reopened:'↩️ Reabierto!',
+    toast_err_name:'⚠️ Ingresa el nombre del contacto.', toast_err_date:'⚠️ Elige una fecha.',
+    toast_err_save:'❌ Error al guardar. Inténtalo de nuevo.', confirm_delete:'¿Eliminar este follow-up?',
     badge_overdue:'Atrasado', badge_today:'Hoy', badge_soon:'Próximo', badge_scheduled:'Programado', badge_done:'Completado',
     col_contact:'Contacto', col_type:'Tipo', col_date:'Fecha', col_status:'Estado', col_value:'Valor', col_notes:'Notas', col_actions:'Acciones',
     empty_title:'No se encontraron follow-ups', empty_sub:'Agrega uno nuevo o cambia el filtro.',
@@ -348,81 +366,141 @@ const T = {
   }
 };
 
-let lang = localStorage.getItem('lang') || 'en';
+let lang   = localStorage.getItem('lang') || 'en';
 let seller = localStorage.getItem('seller') || '';
-let items = [];
+let items  = [];
 let currentFilter = 'all';
-let editingItem = null;
+let editingItem   = null;
+
+/* ── Hash de senha (SHA-256 via SubtleCrypto) ── */
+async function hashPassword(pass) {
+  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
 
 /* ── Lang ── */
+function t(k){ return (T[lang]||T.en)[k]||k; }
+
 function setLang(l) {
   lang = l; localStorage.setItem('lang', l);
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim().toLowerCase().includes(l)));
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.classList.toggle('active', b.textContent.trim().toLowerCase().startsWith(l))
+  );
   applyTranslations();
 }
 
-function t(k) { return (T[lang] || T.en)[k] || k; }
-
 function applyTranslations() {
-  document.querySelectorAll('[data-i]').forEach(el => {
-    const k = el.dataset.i; if (T[lang][k]) el.textContent = T[lang][k];
-  });
-  document.querySelectorAll('[data-placeholder-i]').forEach(el => {
-    const k = el.dataset.placeholderI; if (T[lang][k]) el.placeholder = T[lang][k];
-  });
-  document.querySelectorAll('[data-i-opt]').forEach(el => {
-    const k = el.dataset.iOpt; if (T[lang][k]) el.textContent = T[lang][k];
-  });
-  // Login screen specific
-  const ls = document.getElementById('ls'); if (ls) ls.textContent = t('login_sub');
-  const si = document.getElementById('seller-input'); if (si) si.placeholder = t('login_ph');
-  const eb = document.getElementById('enter-btn'); if (eb) eb.textContent = t('enter_btn');
-  const cb = document.getElementById('btn-change'); if (cb) cb.textContent = t('change_btn');
-  const nb = document.getElementById('btn-new');
-  if (nb) nb.innerHTML = '+ ' + t('modal_new').replace('Nuevo ','').replace('Novo ','').replace('New ','');
-  document.getElementById('sync-label').textContent = t('synced');
-  if (document.getElementById('cfg-banner').style.display !== 'none')
-    document.getElementById('cfg-banner').innerHTML = '⚠️ ' + t('cfg_warn');
-  render();
+  document.querySelectorAll('[data-i]').forEach(el => { const v=T[lang][el.dataset.i]; if(v) el.textContent=v; });
+  document.querySelectorAll('[data-placeholder-i]').forEach(el => { const v=T[lang][el.dataset.placeholderI]; if(v) el.placeholder=v; });
+  document.querySelectorAll('[data-i-opt]').forEach(el => { const v=T[lang][el.dataset.iOpt]; if(v) el.textContent=v; });
+  document.getElementById('auth-sub').textContent = t('auth_sub');
+  const cfg = document.getElementById('cfg-banner');
+  if (cfg.style.display !== 'none') cfg.innerHTML = '⚠️ ' + t('cfg_warn');
+  if (document.getElementById('app').style.display !== 'none') render();
 }
 
-/* ── Auth / seller ── */
-function enterApp() {
-  const name = document.getElementById('seller-input').value.trim();
-  if (!name) { document.getElementById('seller-input').focus(); return; }
+/* ── Auth tabs ── */
+function switchTab(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('tab-login').classList.toggle('active', isLogin);
+  document.getElementById('tab-register').classList.toggle('active', !isLogin);
+  document.getElementById('panel-login').style.display    = isLogin ? '' : 'none';
+  document.getElementById('panel-register').style.display = isLogin ? 'none' : '';
+  document.getElementById('login-error').textContent = '';
+  document.getElementById('reg-error').textContent   = '';
+}
+
+/* ── Register ── */
+async function doRegister() {
+  const name  = document.getElementById('reg-name').value.trim();
+  const pass  = document.getElementById('reg-pass').value;
+  const pass2 = document.getElementById('reg-pass2').value;
+  const errEl = document.getElementById('reg-error');
+  errEl.textContent = '';
+
+  if (!name || !pass || !pass2) { errEl.textContent = t('err_fill'); return; }
+  if (pass.length < 4)          { errEl.textContent = t('err_pass_short'); return; }
+  if (pass !== pass2)           { errEl.textContent = t('err_pass_match'); return; }
+
+  const btn = document.getElementById('btn-register');
+  btn.disabled = true; btn.textContent = '…';
+
+  try {
+    const hash = await hashPassword(pass);
+    const res  = await api('register', { seller: name, passwordHash: hash });
+    enterApp(res.seller);
+  } catch(e) {
+    if (e.message === 'user_exists') errEl.textContent = t('err_user_exists');
+    else errEl.textContent = e.message === 'api' ? t('err_api') : e.message;
+  } finally { btn.disabled = false; btn.textContent = t('btn_register'); }
+}
+
+/* ── Login ── */
+async function doLogin() {
+  const name  = document.getElementById('login-name').value.trim();
+  const pass  = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+
+  if (!name || !pass) { errEl.textContent = t('err_fill'); return; }
+
+  const btn = document.getElementById('btn-login');
+  btn.disabled = true; btn.textContent = '…';
+
+  try {
+    const hash = await hashPassword(pass);
+    const res  = await api('login', { seller: name, passwordHash: hash });
+    enterApp(res.seller);
+  } catch(e) {
+    if      (e.message === 'not_found')     errEl.textContent = t('err_not_found');
+    else if (e.message === 'wrong_password') errEl.textContent = t('err_wrong_pass');
+    else errEl.textContent = e.message === 'api' ? t('err_api') : e.message;
+  } finally { btn.disabled = false; btn.textContent = t('btn_login'); }
+}
+
+function enterApp(name) {
   seller = name; localStorage.setItem('seller', name);
-  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   document.getElementById('seller-chip').textContent = '👤 ' + seller;
   if (API_URL === 'COLE_A_URL_DO_WEB_APP_AQUI') {
-    document.getElementById('cfg-banner').style.display = 'block';
-    document.getElementById('cfg-banner').innerHTML = '⚠️ ' + t('cfg_warn');
+    const b = document.getElementById('cfg-banner');
+    b.style.display = 'block'; b.innerHTML = '⚠️ ' + t('cfg_warn');
   }
   setLang(lang);
   loadItems();
   requestNotifications();
 }
 
-function changeSeller() {
+function doLogout() {
   seller = ''; localStorage.removeItem('seller');
   document.getElementById('app').style.display = 'none';
-  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('login-name').value = '';
+  document.getElementById('login-pass').value = '';
+  document.getElementById('login-error').textContent = '';
+  switchTab('login');
 }
 
 /* ── API ── */
-async function api(action, payload = {}) {
-  setSyncState('busy', t('syncing'));
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain' },
-    body: JSON.stringify({ action, key: SECRET_KEY, ...payload })
-  });
-  const data = await res.json();
-  if (!data.ok) throw new Error(data.error || 'API error');
-  return data;
+async function api(action, payload={}) {
+  if (action !== 'register' && action !== 'login') setSyncState('busy', t('syncing'));
+  try {
+    const res  = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action, key: SECRET_KEY, ...payload })
+    });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'API error');
+    return data;
+  } catch(e) {
+    if (e.message === 'Failed to fetch') throw new Error('api');
+    throw e;
+  }
 }
 
-async function loadItems(manual = false) {
+async function loadItems(manual=false) {
   if (API_URL === 'COLE_A_URL_DO_WEB_APP_AQUI') {
     setSyncState('err', t('sync_err'));
     document.getElementById('table-wrap').innerHTML =
@@ -433,32 +511,28 @@ async function loadItems(manual = false) {
     const data = await api('list', { seller });
     items = data.items || [];
     setSyncState('ok', t('synced'));
-    if (manual) showToast(t('refresh') + ' OK');
+    if (manual) showToast('✅ OK');
     render();
   } catch(e) {
-    setSyncState('err', t('sync_err'));
-    showToast(t('toast_err_api'));
-    console.error(e);
-    document.getElementById('table-wrap').innerHTML =
-      `<div class="empty-state"><div class="empty-icon">⚠️</div><div class="empty-title">${t('sync_err')}</div></div>`;
+    setSyncState('err', t('sync_err')); showToast(t('err_api')); console.error(e);
   }
 }
 
 /* ── CRUD ── */
-function openModal(item = null) {
+function openModal(item=null) {
   editingItem = item;
   document.getElementById('modal-title').textContent = item ? t('modal_edit') : t('modal_new');
   document.getElementById('f-name').value    = item?.name    || '';
   document.getElementById('f-company').value = item?.company || '';
   document.getElementById('f-email').value   = item?.email   || '';
   document.getElementById('f-type').value    = item?.type    || 'Trial';
-  document.getElementById('f-date').value    = item?.date    || addDays(today(), 1);
+  document.getElementById('f-date').value    = item?.date    || addDays(today(),1);
   document.getElementById('f-value').value   = item?.value   || '';
   document.getElementById('f-notes').value   = item?.notes   || '';
   document.getElementById('modal-overlay').classList.add('open');
   setTimeout(() => document.getElementById('f-name').focus(), 60);
 }
-function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); editingItem = null; }
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); editingItem=null; }
 
 async function saveItem() {
   const name = document.getElementById('f-name').value.trim();
@@ -467,158 +541,131 @@ async function saveItem() {
   if (!date) { showToast(t('toast_err_date')); return; }
   const btn = document.getElementById('save-btn');
   btn.disabled = true; btn.textContent = t('saving');
-  const item = {
-    ...(editingItem || {}),
-    seller, name,
+  const item = { ...(editingItem||{}), seller, name,
     company: document.getElementById('f-company').value.trim(),
     email:   document.getElementById('f-email').value.trim(),
-    type:    document.getElementById('f-type').value,
-    date, value: document.getElementById('f-value').value.trim(),
-    notes: document.getElementById('f-notes').value.trim(),
-  };
+    type:    document.getElementById('f-type').value, date,
+    value:   document.getElementById('f-value').value.trim(),
+    notes:   document.getElementById('f-notes').value.trim() };
   try {
-    if (editingItem) {
-      await api('update', { item });
-      showToast(t('toast_updated'));
-    } else {
-      await api('save', { item });
-      showToast(t('toast_saved'));
-    }
+    if (editingItem) { await api('update',{item}); showToast(t('toast_updated')); }
+    else             { await api('save',  {item}); showToast(t('toast_saved')); }
     closeModal(); await loadItems();
-  } catch(e) {
-    showToast(t('toast_err_save')); setSyncState('err', t('sync_err')); console.error(e);
-  } finally { btn.disabled = false; btn.textContent = t('save_btn'); }
+  } catch(e) { showToast(t('toast_err_save')); setSyncState('err',t('sync_err')); }
+  finally { btn.disabled=false; btn.textContent=t('save_btn'); }
 }
 
 async function toggleDone(item) {
-  const updated = { ...item, done: !item.done };
   try {
-    await api('update', { item: updated });
-    showToast(updated.done ? t('toast_done') : t('toast_reopened'));
+    await api('update', { item: {...item, done: !item.done} });
+    showToast(item.done ? t('toast_reopened') : t('toast_done'));
     await loadItems();
   } catch(e) { showToast(t('toast_err_save')); }
 }
 
 async function deleteItem(item) {
   if (!confirm(t('confirm_delete'))) return;
-  setSyncState('busy', t('deleting'));
-  try {
-    await api('delete', { id: item.id });
-    showToast(t('toast_deleted')); await loadItems();
-  } catch(e) { showToast(t('toast_err_save')); setSyncState('err', t('sync_err')); }
+  setSyncState('busy', t('syncing'));
+  try { await api('delete',{id:item.id}); showToast(t('toast_deleted')); await loadItems(); }
+  catch(e) { showToast(t('toast_err_save')); setSyncState('err',t('sync_err')); }
 }
 
 /* ── Render ── */
 function render() {
-  const search = (document.getElementById('search')?.value || '').toLowerCase();
+  const search = (document.getElementById('search')?.value||'').toLowerCase();
   const tn = today();
   const active = items.filter(i => !i.done);
-  document.getElementById('s-overdue').textContent = active.filter(i => i.date < tn).length;
-  document.getElementById('s-today').textContent   = active.filter(i => i.date === tn).length;
-  document.getElementById('s-soon').textContent    = active.filter(i => i.date > tn && i.date <= addDays(tn,7)).length;
+  document.getElementById('s-overdue').textContent = active.filter(i=>i.date<tn).length;
+  document.getElementById('s-today').textContent   = active.filter(i=>i.date===tn).length;
+  document.getElementById('s-soon').textContent    = active.filter(i=>i.date>tn&&i.date<=addDays(tn,7)).length;
   document.getElementById('s-total').textContent   = active.length;
 
   let filtered = items.filter(i => {
-    if (search && !(i.name + ' ' + (i.company||'')).toLowerCase().includes(search)) return false;
-    if (currentFilter === 'overdue') return !i.done && i.date < tn;
-    if (currentFilter === 'today')   return !i.done && i.date === tn;
-    if (currentFilter === 'soon')    return !i.done && i.date > tn && i.date <= addDays(tn,7);
+    if (search && !(i.name+' '+(i.company||'')).toLowerCase().includes(search)) return false;
+    if (currentFilter==='overdue') return !i.done && i.date<tn;
+    if (currentFilter==='today')   return !i.done && i.date===tn;
+    if (currentFilter==='soon')    return !i.done && i.date>tn && i.date<=addDays(tn,7);
     return true;
   });
-  filtered.sort((a,b) => { if (a.done !== b.done) return a.done ? 1 : -1; return a.date.localeCompare(b.date); });
+  filtered.sort((a,b)=>{ if(a.done!==b.done) return a.done?1:-1; return a.date.localeCompare(b.date); });
   document.getElementById('count-badge').textContent = filtered.length;
 
   const wrap = document.getElementById('table-wrap');
-  if (filtered.length === 0) {
-    wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">${t('empty_title')}</div><div style="font-size:13px;margin-top:4px">${t('empty_sub')}</div></div>`;
+  if (!filtered.length) {
+    wrap.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">${t('empty_title')}</div><div style="font-size:13px;margin-top:4px">${t('empty_sub')}</div></div>`;
     return;
   }
-
-  const typeClass = { Trial:'tp-trial', Sale:'tp-sale', Venda:'tp-sale', Venta:'tp-sale', Demo:'tp-demo', Renewal:'tp-renew', Renovação:'tp-renew', Renovación:'tp-renew' };
-
-  const rows = filtered.map((item, idx) => {
-    const cls = item.date < tn ? 'overdue' : item.date === tn ? 'today' : '';
-    const dateCss = !item.done && cls === 'overdue' ? 'color:var(--danger);font-weight:500' : !item.done && cls === 'today' ? 'color:var(--warn);font-weight:500' : 'font-weight:500';
-    const badge = item.done
-      ? `<span class="badge bs">${t('badge_done')}</span>`
-      : cls === 'overdue' ? `<span class="badge bd">${t('badge_overdue')}</span>`
-      : cls === 'today'   ? `<span class="badge bw">${t('badge_today')}</span>`
-      : item.date <= addDays(tn,7) ? `<span class="badge ba">${t('badge_soon')}</span>`
+  const tc={Trial:'tp-trial',Sale:'tp-sale',Venda:'tp-sale',Venta:'tp-sale',Demo:'tp-demo',Renewal:'tp-renew','Renovação':'tp-renew','Renovación':'tp-renew'};
+  const rows = filtered.map((item,idx)=>{
+    const cls = item.date<tn?'overdue':item.date===tn?'today':'';
+    const dc  = !item.done&&cls==='overdue'?'color:var(--danger);font-weight:500':!item.done&&cls==='today'?'color:var(--warn);font-weight:500':'font-weight:500';
+    const badge = item.done ? `<span class="badge bs">${t('badge_done')}</span>`
+      : cls==='overdue' ? `<span class="badge bd">${t('badge_overdue')}</span>`
+      : cls==='today'   ? `<span class="badge bw">${t('badge_today')}</span>`
+      : item.date<=addDays(tn,7) ? `<span class="badge ba">${t('badge_soon')}</span>`
       : `<span class="badge bm">${t('badge_scheduled')}</span>`;
-
-    return `<tr style="${item.done ? 'opacity:.5' : ''}">
+    return `<tr style="${item.done?'opacity:.5':''}">
       <td data-label="${t('col_contact')}"><div class="name-cell">${esc(item.name)}</div><div class="sub-cell">${esc(item.company||'—')}</div></td>
-      <td data-label="${t('col_type')}"><span class="type-pill ${typeClass[item.type]||'tp-trial'}">${esc(item.type)}</span></td>
-      <td data-label="${t('col_date')}"><span style="${dateCss}">${fmtDate(item.date)}</span></td>
+      <td data-label="${t('col_type')}"><span class="type-pill ${tc[item.type]||'tp-trial'}">${esc(item.type)}</span></td>
+      <td data-label="${t('col_date')}"><span style="${dc}">${fmtDate(item.date)}</span></td>
       <td data-label="${t('col_status')}">${badge}</td>
-      <td data-label="${t('col_value')}" style="color:var(--muted);font-size:13px">${item.value ? item.value : '—'}</td>
+      <td data-label="${t('col_value')}" style="color:var(--muted);font-size:13px">${item.value||'—'}</td>
       <td data-label="${t('col_notes')}" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:12px">${esc(item.notes||'')}</td>
       <td data-label="${t('col_actions')}"><div class="actions">
-        <button class="icon-btn ib-done"   title="${item.done ? t('toast_reopened') : t('toast_done')}" onclick="toggleDone(items[${idx}])">${item.done ? '↩' : '✓'}</button>
-        <button class="icon-btn"           title="Edit" onclick="openModal(items.find(i=>i.id==='${item.id}'))">✎</button>
-        <button class="icon-btn ib-delete" title="Delete" onclick="deleteItem(items.find(i=>i.id==='${item.id}'))">✕</button>
+        <button class="icon-btn ib-done"   onclick="toggleDone(items[${idx}])">${item.done?'↩':'✓'}</button>
+        <button class="icon-btn"           onclick="openModal(items.find(i=>i.id==='${item.id}'))">✎</button>
+        <button class="icon-btn ib-delete" onclick="deleteItem(items.find(i=>i.id==='${item.id}'))">✕</button>
       </div></td>
     </tr>`;
   }).join('');
-
-  wrap.innerHTML = `<table>
-    <thead><tr>
-      <th>${t('col_contact')}</th><th>${t('col_type')}</th><th>${t('col_date')}</th>
-      <th>${t('col_status')}</th><th>${t('col_value')}</th><th>${t('col_notes')}</th><th>${t('col_actions')}</th>
-    </tr></thead>
-    <tbody>${rows}</tbody>
-  </table>`;
+  wrap.innerHTML=`<table><thead><tr>
+    <th>${t('col_contact')}</th><th>${t('col_type')}</th><th>${t('col_date')}</th>
+    <th>${t('col_status')}</th><th>${t('col_value')}</th><th>${t('col_notes')}</th><th>${t('col_actions')}</th>
+  </tr></thead><tbody>${rows}</tbody></table>`;
 }
 
-/* ── Notifications ── */
+/* ── Notificações ── */
 function requestNotifications() {
   if (!('Notification' in window)) return;
-  if (Notification.permission === 'default') Notification.requestPermission().then(checkAndNotify);
+  if (Notification.permission==='default') Notification.requestPermission().then(checkAndNotify);
   else checkAndNotify();
-  setInterval(checkAndNotify, 30 * 60 * 1000);
+  setInterval(checkAndNotify, 30*60*1000);
 }
 function checkAndNotify() {
-  if (Notification.permission !== 'granted') return;
-  const tn = today();
-  const ov = items.filter(i => !i.done && i.date < tn);
-  const td = items.filter(i => !i.done && i.date === tn);
-  if (ov.length) new Notification(`⚠️ ${ov.length} ${t('notif_overdue')}`, { body: ov.slice(0,3).map(i=>`• ${i.name}`).join('\n') });
-  if (td.length) setTimeout(() => new Notification(`📅 ${td.length} ${t('notif_today')}`, { body: td.slice(0,3).map(i=>`• ${i.name}`).join('\n') }), 900);
+  if (Notification.permission!=='granted') return;
+  const tn=today();
+  const ov=items.filter(i=>!i.done&&i.date<tn);
+  const td=items.filter(i=>!i.done&&i.date===tn);
+  if (ov.length) new Notification(`⚠️ ${ov.length} ${t('notif_overdue')}`,{body:ov.slice(0,3).map(i=>`• ${i.name}`).join('\n')});
+  if (td.length) setTimeout(()=>new Notification(`📅 ${td.length} ${t('notif_today')}`,{body:td.slice(0,3).map(i=>`• ${i.name}`).join('\n')}),900);
 }
 
 /* ── Utils ── */
-function today() { return new Date().toISOString().split('T')[0]; }
-function addDays(ds, n) { const d = new Date(ds+'T00:00:00'); d.setDate(d.getDate()+n); return d.toISOString().split('T')[0]; }
-function fmtDate(ds) { if (!ds) return '—'; const [y,m,d] = ds.split('-'); return `${d}/${m}/${y}`; }
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function showToast(msg) { const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2800); }
-function setSyncState(st, label) {
-  const d = document.getElementById('sync-dot');
-  d.className = 'sync-dot' + (st === 'busy' ? ' busy' : st === 'err' ? ' err' : '');
-  document.getElementById('sync-label').textContent = label;
+function today(){ return new Date().toISOString().split('T')[0]; }
+function addDays(ds,n){ const d=new Date(ds+'T00:00:00'); d.setDate(d.getDate()+n); return d.toISOString().split('T')[0]; }
+function fmtDate(ds){ if(!ds) return '—'; const[y,m,d]=ds.split('-'); return `${d}/${m}/${y}`; }
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function showToast(msg){ const e=document.getElementById('toast'); e.textContent=msg; e.classList.add('show'); setTimeout(()=>e.classList.remove('show'),2800); }
+function setSyncState(st,label){
+  const d=document.getElementById('sync-dot');
+  d.className='sync-dot'+(st==='busy'?' busy':st==='err'?' err':'');
+  document.getElementById('sync-label').textContent=label;
 }
-function setFilter(btn) {
-  document.querySelectorAll('.fil-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active'); currentFilter = btn.dataset.filter; render();
+function setFilter(btn){
+  document.querySelectorAll('.fil-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); currentFilter=btn.dataset.filter; render();
 }
-document.getElementById('modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('modal-overlay')) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-document.getElementById('seller-input').addEventListener('keydown', e => { if (e.key === 'Enter') enterApp(); });
+
+document.getElementById('modal-overlay').addEventListener('click',e=>{ if(e.target===document.getElementById('modal-overlay')) closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+document.getElementById('login-pass').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
+document.getElementById('reg-pass2').addEventListener('keydown',e=>{ if(e.key==='Enter') doRegister(); });
 
 /* ── Init ── */
 setLang(lang);
 if (seller) {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  document.getElementById('seller-chip').textContent = '👤 ' + seller;
-  if (API_URL === 'COLE_A_URL_DO_WEB_APP_AQUI') {
-    document.getElementById('cfg-banner').style.display = 'block';
-    document.getElementById('cfg-banner').innerHTML = '⚠️ ' + t('cfg_warn');
-  }
-  loadItems();
-  requestNotifications();
-} else {
-  document.getElementById('seller-input').focus();
+  // Sessão salva — pede confirmação de senha silenciosa apenas verificando se o usuário existe
+  enterApp(seller);
 }
 </script>
 </body>
