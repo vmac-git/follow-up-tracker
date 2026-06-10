@@ -4,8 +4,8 @@
 // ============================================================
 
 // ⚙️ CONFIGURAÇÃO — edite estas 2 variáveis
-const API_URL    = 'COLE_A_URL_DO_WEB_APP_AQUI';
-const SECRET_KEY = 'TROQUE_ESTA_CHAVE';
+const API_URL    = 'https://script.google.com/macros/s/AKfycbzWUmDm_sHxO9pPF3t2yN8zgSD4h3uNuUD03LG935IYIs8hMbAFE_KeNSjgPWllm3Bq/exec';
+const SECRET_KEY = 'acx_fup_manager';
 
 // ── i18n ────────────────────────────────────────────────────
 const T = {
