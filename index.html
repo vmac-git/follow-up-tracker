@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Follow-up Tracker · Vendas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F6F2;
+    --surface: #FFFFFF;
+    --border: #E4E2DA;
+    --text: #1A1917;
+    --muted: #7A7872;
+    --accent: #2D6BE4;
+    --accent-light: #EBF1FD;
+    --danger: #D63B3B;
+    --danger-light: #FDF0F0;
+    --warning: #C97820;
+    --warning-light: #FEF5E7;
+    --success: #1E8A4C;
+    --success-light: #EBF7F1;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-size: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+  }
+
+  .logo-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #notif-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, color 0.15s;
+  }
+  #notif-btn:hover { background: var(--bg); color: var(--text); }
+  #notif-btn.active { background: var(--accent-light); color: var(--accent); border-color: var(--accent); }
+
+  .btn-primary {
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--accent);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 20px 80px; }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  .stat-value {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .stat-value.danger { color: var(--danger); }
+  .stat-value.warning { color: var(--warning); }
+  .stat-value.accent { color: var(--accent); }
+  .stat-value.success { color: var(--success); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 99px;
+  }
+
+  .badge-danger  { background: var(--danger-light);  color: var(--danger); }
+  .badge-warning { background: var(--warning-light); color: var(--warning); }
+  .badge-accent  { background: var(--accent-light);  color: var(--accent); }
+  .badge-success { background: var(--success-light); color: var(--success); }
+  .badge-muted   { background: #F0EEE8; color: var(--muted); }
+
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .filter-btn {
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.12s;
+  }
+  .filter-btn:hover { background: var(--bg); }
+  .filter-btn.active { background: var(--text); color: #fff; border-color: var(--text); }
+
+  .search-input {
+    padding: 5px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    background: var(--surface);
+    color: var(--text);
+    outline: none;
+    width: 200px;
+  }
+  .search-input:focus { border-color: var(--accent); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  thead th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #FAFAF8; }
+
+  td {
+    padding: 11px 14px;
+    vertical-align: middle;
+  }
+
+  .name-cell { font-weight: 500; }
+  .company-cell { color: var(--muted); font-size: 13px; }
+
+  .type-pill {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .type-trial { background: #EDE9FE; color: #5B21B6; }
+  .type-venda { background: #DCFCE7; color: #166534; }
+  .type-demo  { background: #FEF3C7; color: #92400E; }
+  .type-renovacao { background: #DBEAFE; color: #1E40AF; }
+
+  .date-cell {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .actions-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .icon-btn {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.12s;
+    color: var(--muted);
+  }
+  .icon-btn:hover { background: var(--bg); color: var(--text); }
+  .icon-btn.done-btn:hover { background: var(--success-light); color: var(--success); border-color: var(--success); }
+  .icon-btn.delete-btn:hover { background: var(--danger-light); color: var(--danger); border-color: var(--danger); }
+
+  .empty-state {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 48px 24px;
+    text-align: center;
+    color: var(--muted);
+    box-shadow: var(--shadow);
+  }
+
+  .empty-icon { font-size: 32px; margin-bottom: 12px; }
+  .empty-title { font-weight: 600; color: var(--text); margin-bottom: 4px; }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px;
+    width: 100%;
+    max-width: 480px;
+    margin: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  }
+
+  .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .form-group {
+    margin-bottom: 14px;
+  }
+  .form-group.full { grid-column: 1 / -1; }
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 5px;
+  }
+
+  input[type="text"], input[type="email"], input[type="date"], select, textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.12s;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); background: var(--surface); }
+  textarea { resize: vertical; min-height: 70px; }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-ghost {
+    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.12s;
+  }
+  .btn-ghost:hover { background: var(--bg); color: var(--text); }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: var(--text);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.25s;
+    z-index: 999;
+    pointer-events: none;
+    max-width: 320px;
+  }
+  #toast.show { opacity: 1; transform: translateY(0); }
+
+  /* notification banner */
+  #notif-banner {
+    display: none;
+    background: var(--warning-light);
+    border: 1px solid #F0C866;
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--warning);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  @media (max-width: 700px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .form-row { grid-template-columns: 1fr; }
+    table thead { display: none; }
+    table, tbody, tr, td { display: block; }
+    tr { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+    td { padding: 2px 0; border: none; }
+    td::before { content: attr(data-label); font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; display: block; }
+    .search-input { width: 100%; }
+    .filter-row { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    Follow-up Tracker
+  </div>
+  <div class="header-actions">
+    <button id="notif-btn" onclick="toggleNotifications()">🔔 Notificações</button>
+    <button class="btn-primary" onclick="openModal()">+ Novo follow-up</button>
+  </div>
+</header>
+
+<main>
+
+  <div id="notif-banner" style="display:none">
+    ⚠️ Ative as notificações do navegador para receber alertas de follow-up no desktop.
+    <button onclick="requestNotifications()" style="margin-left:auto;padding:4px 10px;background:#C97820;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:12px;">Ativar</button>
+    <button onclick="document.getElementById('notif-banner').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--warning);">×</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Atrasados</div>
+      <div class="stat-value danger" id="stat-overdue">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Hoje</div>
+      <div class="stat-value warning" id="stat-today">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Próximos 7 dias</div>
+      <div class="stat-value accent" id="stat-soon">0</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Total ativo</div>
+      <div class="stat-value success" id="stat-total">0</div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div class="section-title">
+      Follow-ups
+      <span class="badge badge-muted" id="count-badge">0</span>
+    </div>
+    <div class="filter-row">
+      <input class="search-input" type="text" id="search" placeholder="Buscar nome ou empresa…" oninput="render()">
+      <button class="filter-btn active" data-filter="all" onclick="setFilter(this)">Todos</button>
+      <button class="filter-btn" data-filter="atrasado" onclick="setFilter(this)">Atrasados</button>
+      <button class="filter-btn" data-filter="hoje" onclick="setFilter(this)">Hoje</button>
+      <button class="filter-btn" data-filter="proximo" onclick="setFilter(this)">Próximos</button>
+    </div>
+  </div>
+
+  <div id="table-container"></div>
+
+</main>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Novo follow-up</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nome do contato *</label>
+        <input type="text" id="f-name" placeholder="João Silva">
+      </div>
+      <div class="form-group">
+        <label>Empresa</label>
+        <input type="text" id="f-company" placeholder="Acme Corp">
+      </div>
+      <div class="form-group">
+        <label>E-mail</label>
+        <input type="email" id="f-email" placeholder="joao@acme.com">
+      </div>
+      <div class="form-group">
+        <label>Tipo</label>
+        <select id="f-type">
+          <option value="trial">Trial</option>
+          <option value="venda">Venda</option>
+          <option value="demo">Demo</option>
+          <option value="renovacao">Renovação</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Data do follow-up *</label>
+        <input type="date" id="f-date">
+      </div>
+      <div class="form-group">
+        <label>Valor estimado (R$)</label>
+        <input type="text" id="f-value" placeholder="5.000">
+      </div>
+      <div class="form-group full">
+        <label>Observações</label>
+        <textarea id="f-notes" placeholder="Contexto da conversa, próximo passo…"></textarea>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal()">Cancelar</button>
+      <button class="btn-primary" onclick="saveItem()">Salvar follow-up</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const STORE_KEY = 'followups_v2';
+let items = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+let currentFilter = 'all';
+let editingId = null;
+let notifEnabled = Notification.permission === 'granted';
+
+function save() { localStorage.setItem(STORE_KEY, JSON.stringify(items)); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+
+function today() {
+  const d = new Date();
+  return d.toISOString().split('T')[0];
+}
+
+function addDays(dateStr, n) {
+  const d = new Date(dateStr + 'T00:00:00');
+  d.setDate(d.getDate() + n);
+  return d.toISOString().split('T')[0];
+}
+
+function classifyDate(dateStr) {
+  const t = today();
+  if (dateStr < t) return 'atrasado';
+  if (dateStr === t) return 'hoje';
+  if (dateStr <= addDays(t, 7)) return 'proximo';
+  return 'futuro';
+}
+
+function fmtDate(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function showToast(msg, duration = 2800) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), duration);
+}
+
+function setFilter(btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = btn.dataset.filter;
+  render();
+}
+
+function openModal(id = null) {
+  editingId = id;
+  const modal = document.getElementById('modal');
+  document.getElementById('modal-title').textContent = id ? 'Editar follow-up' : 'Novo follow-up';
+  if (id) {
+    const item = items.find(i => i.id === id);
+    if (item) {
+      document.getElementById('f-name').value    = item.name || '';
+      document.getElementById('f-company').value = item.company || '';
+      document.getElementById('f-email').value   = item.email || '';
+      document.getElementById('f-type').value    = item.type || 'trial';
+      document.getElementById('f-date').value    = item.date || '';
+      document.getElementById('f-value').value   = item.value || '';
+      document.getElementById('f-notes').value   = item.notes || '';
+    }
+  } else {
+    ['f-name','f-company','f-email','f-value','f-notes'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-type').value = 'trial';
+    document.getElementById('f-date').value = addDays(today(), 1);
+  }
+  modal.classList.add('open');
+  setTimeout(() => document.getElementById('f-name').focus(), 50);
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  editingId = null;
+}
+
+function saveItem() {
+  const name = document.getElementById('f-name').value.trim();
+  const date = document.getElementById('f-date').value;
+  if (!name) { showToast('⚠️ Informe o nome do contato'); return; }
+  if (!date) { showToast('⚠️ Escolha a data do follow-up'); return; }
+
+  const item = {
+    id: editingId || uid(),
+    name,
+    company: document.getElementById('f-company').value.trim(),
+    email:   document.getElementById('f-email').value.trim(),
+    type:    document.getElementById('f-type').value,
+    date,
+    value:   document.getElementById('f-value').value.trim(),
+    notes:   document.getElementById('f-notes').value.trim(),
+    done:    false,
+    createdAt: editingId ? (items.find(i=>i.id===editingId)?.createdAt || Date.now()) : Date.now()
+  };
+
+  if (editingId) {
+    const idx = items.findIndex(i => i.id === editingId);
+    item.done = items[idx].done;
+    items[idx] = item;
+    showToast('✏️ Follow-up atualizado!');
+  } else {
+    items.unshift(item);
+    showToast('✅ Follow-up adicionado!');
+  }
+
+  save(); closeModal(); render();
+}
+
+function markDone(id) {
+  const item = items.find(i => i.id === id);
+  if (!item) return;
+  item.done = !item.done;
+  save(); render();
+  showToast(item.done ? '✅ Marcado como concluído!' : '↩️ Reaberto!');
+}
+
+function deleteItem(id) {
+  if (!confirm('Remover este follow-up?')) return;
+  items = items.filter(i => i.id !== id);
+  save(); render();
+  showToast('🗑️ Removido');
+}
+
+function render() {
+  const search = document.getElementById('search').value.toLowerCase();
+  const t = today();
+
+  const active = items.filter(i => !i.done);
+  const overdue = active.filter(i => i.date < t).length;
+  const todayC  = active.filter(i => i.date === t).length;
+  const soon    = active.filter(i => i.date > t && i.date <= addDays(t, 7)).length;
+
+  document.getElementById('stat-overdue').textContent = overdue;
+  document.getElementById('stat-today').textContent   = todayC;
+  document.getElementById('stat-soon').textContent    = soon;
+  document.getElementById('stat-total').textContent   = active.length;
+
+  let filtered = items.filter(i => {
+    const q = (i.name + ' ' + i.company).toLowerCase();
+    if (search && !q.includes(search)) return false;
+    if (currentFilter === 'all') return true;
+    if (currentFilter === 'atrasado') return !i.done && i.date < t;
+    if (currentFilter === 'hoje')     return !i.done && i.date === t;
+    if (currentFilter === 'proximo')  return !i.done && i.date > t && i.date <= addDays(t, 7);
+    return true;
+  });
+
+  filtered.sort((a, b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    return a.date.localeCompare(b.date);
+  });
+
+  document.getElementById('count-badge').textContent = filtered.length;
+
+  const container = document.getElementById('table-container');
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📋</div>
+        <div class="empty-title">Nenhum follow-up encontrado</div>
+        <div style="font-size:13px;margin-top:4px">Adicione um novo ou mude o filtro acima.</div>
+      </div>`;
+    return;
+  }
+
+  const typeLabel = { trial: 'Trial', venda: 'Venda', demo: 'Demo', renovacao: 'Renovação' };
+  const typeClass = { trial: 'type-trial', venda: 'type-venda', demo: 'type-demo', renovacao: 'type-renovacao' };
+
+  const rows = filtered.map(item => {
+    const cls = classifyDate(item.date);
+    const dateCls = item.done ? '' :
+      cls === 'atrasado' ? 'danger' :
+      cls === 'hoje' ? 'warning' : '';
+
+    const statusBadge = item.done
+      ? `<span class="badge badge-success">Concluído</span>`
+      : cls === 'atrasado' ? `<span class="badge badge-danger">Atrasado</span>`
+      : cls === 'hoje'     ? `<span class="badge badge-warning">Hoje</span>`
+      : cls === 'proximo'  ? `<span class="badge badge-accent">Em breve</span>`
+      : `<span class="badge badge-muted">Agendado</span>`;
+
+    const opacity = item.done ? 'opacity:0.5;' : '';
+    const valueFmt = item.value ? `R$ ${item.value}` : '—';
+
+    return `<tr style="${opacity}">
+      <td data-label="Contato">
+        <div class="name-cell">${escHtml(item.name)}</div>
+        <div class="company-cell">${escHtml(item.company || '—')}</div>
+      </td>
+      <td data-label="Tipo"><span class="type-pill ${typeClass[item.type] || ''}">${typeLabel[item.type] || item.type}</span></td>
+      <td data-label="Data"><span class="date-cell" style="color:${dateCls === 'danger' ? 'var(--danger)' : dateCls === 'warning' ? 'var(--warning)' : 'inherit'}">${fmtDate(item.date)}</span></td>
+      <td data-label="Status">${statusBadge}</td>
+      <td data-label="Valor" style="color:var(--muted);font-size:13px">${valueFmt}</td>
+      <td data-label="Obs" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:12px">${escHtml(item.notes || '')}</td>
+      <td data-label="Ações">
+        <div class="actions-cell">
+          <button class="icon-btn done-btn" title="${item.done ? 'Reabrir' : 'Marcar concluído'}" onclick="markDone('${item.id}')">
+            ${item.done ? '↩' : '✓'}
+          </button>
+          <button class="icon-btn" title="Editar" onclick="openModal('${item.id}')">✎</button>
+          <button class="icon-btn delete-btn" title="Remover" onclick="deleteItem('${item.id}')">✕</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  container.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Contato</th>
+          <th>Tipo</th>
+          <th>Data</th>
+          <th>Status</th>
+          <th>Valor</th>
+          <th>Observações</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function toggleNotifications() {
+  if (Notification.permission === 'granted') {
+    showToast('🔔 Notificações já estão ativas!');
+    document.getElementById('notif-btn').classList.add('active');
+  } else {
+    requestNotifications();
+  }
+}
+
+function requestNotifications() {
+  if (!('Notification' in window)) {
+    showToast('⚠️ Seu navegador não suporta notificações');
+    return;
+  }
+  Notification.requestPermission().then(perm => {
+    notifEnabled = perm === 'granted';
+    if (notifEnabled) {
+      document.getElementById('notif-btn').classList.add('active');
+      document.getElementById('notif-banner').style.display = 'none';
+      showToast('✅ Notificações ativadas!');
+      new Notification('Follow-up Tracker 🎉', {
+        body: 'Você vai receber alertas de follow-up!',
+        icon: 'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/72x72/1f514.png'
+      });
+      checkAndNotify();
+    } else {
+      showToast('⚠️ Permissão negada. Ative nas configurações do navegador.');
+    }
+  });
+}
+
+function checkAndNotify() {
+  if (!notifEnabled) return;
+  const t = today();
+  const active = items.filter(i => !i.done);
+  const overdue = active.filter(i => i.date < t);
+  const todayItems = active.filter(i => i.date === t);
+
+  if (overdue.length > 0) {
+    new Notification(`⚠️ ${overdue.length} follow-up(s) atrasados`, {
+      body: overdue.slice(0,3).map(i => `• ${i.name}${i.company ? ' – ' + i.company : ''}`).join('\n'),
+      icon: 'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/72x72/26a0.png'
+    });
+  }
+  if (todayItems.length > 0) {
+    setTimeout(() => {
+      new Notification(`📅 ${todayItems.length} follow-up(s) para hoje`, {
+        body: todayItems.slice(0,3).map(i => `• ${i.name}${i.company ? ' – ' + i.company : ''}`).join('\n'),
+        icon: 'https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/72x72/1f4c5.png'
+      });
+    }, 800);
+  }
+}
+
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal')) closeModal();
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+  setTimeout(() => {
+    document.getElementById('notif-banner').style.display = 'flex';
+  }, 1200);
+} else if (Notification.permission === 'granted') {
+  document.getElementById('notif-btn').classList.add('active');
+  notifEnabled = true;
+}
+
+render();
+
+if (notifEnabled) {
+  setTimeout(checkAndNotify, 2000);
+}
+
+setInterval(() => {
+  if (notifEnabled) checkAndNotify();
+}, 30 * 60 * 1000);
+</script>
+</body>
+</html>
