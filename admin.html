@@ -9,14 +9,14 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #F7F6F2; --surface: #fff; --border: #E4E2DA;
-  --text: #1A1917; --muted: #7A7872;
-  --accent: #2D6BE4; --accent-light: #EBF1FD;
-  --danger: #D63B3B; --danger-light: #FDF0F0;
-  --warn: #C97820; --warn-light: #FEF5E7;
-  --ok: #1E8A4C; --ok-light: #EBF7F1;
-  --admin: #6D28D9; --admin-light: #EDE9FE;
-  --r: 10px; --rs: 6px;
+  --bg:#F7F6F2; --surface:#fff; --border:#E4E2DA;
+  --text:#1A1917; --muted:#7A7872;
+  --accent:#2D6BE4; --accent-light:#EBF1FD;
+  --danger:#D63B3B; --danger-light:#FDF0F0;
+  --warn:#C97820; --warn-light:#FEF5E7;
+  --ok:#1E8A4C; --ok-light:#EBF7F1;
+  --admin:#6D28D9; --admin-light:#EDE9FE;
+  --r:10px; --rs:6px;
 }
 body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:14px; line-height:1.6; }
 
@@ -32,6 +32,9 @@ body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); 
 .btn-auth { width:100%; padding:11px; border:none; border-radius:var(--rs); background:var(--admin); color:#fff; font-size:14px; font-weight:500; cursor:pointer; font-family:inherit; transition:opacity .15s; }
 .btn-auth:hover { opacity:.88; }
 .btn-auth:disabled { opacity:.5; cursor:not-allowed; }
+.lang-row { display:flex; gap:8px; justify-content:center; margin-bottom:20px; }
+.lang-btn { padding:4px 14px; border:1px solid var(--border); border-radius:99px; background:transparent; font-family:inherit; font-size:12px; font-weight:500; cursor:pointer; color:var(--muted); transition:all .12s; }
+.lang-btn.active { background:var(--text); color:#fff; border-color:var(--text); }
 
 /* ── App ── */
 #app { display:none; }
@@ -42,48 +45,34 @@ header { background:var(--surface); border-bottom:1px solid var(--border); paddi
 .header-right { display:flex; align-items:center; gap:8px; }
 .btn-sm { padding:5px 11px; border:1px solid var(--border); border-radius:var(--rs); background:transparent; font-size:12px; cursor:pointer; font-family:inherit; transition:all .12s; color:var(--muted); }
 .btn-sm:hover { background:var(--bg); color:var(--text); }
-.tab-bar { background:var(--surface); border-bottom:1px solid var(--border); padding:0 20px; display:flex; gap:0; }
+.tab-bar { background:var(--surface); border-bottom:1px solid var(--border); padding:0 20px; display:flex; }
 .tab-btn { padding:12px 18px; border:none; background:transparent; font-family:inherit; font-size:13px; font-weight:500; color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all .15s; }
 .tab-btn.active { color:var(--admin); border-bottom-color:var(--admin); }
-.tab-btn:hover:not(.active) { color:var(--text); }
-
 main { max-width:1200px; margin:0 auto; padding:24px 20px 80px; }
-
-/* sync */
 .sync-row { display:flex; align-items:center; gap:7px; margin-bottom:20px; font-size:12px; color:var(--muted); }
 .sync-dot { width:7px; height:7px; border-radius:50%; background:var(--ok); }
 .sync-dot.busy { background:var(--warn); animation:pulse 1s infinite; }
 .sync-dot.err  { background:var(--danger); }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-/* Stats */
 .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:28px; }
 .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:14px 16px; }
 .stat-label { font-size:11px; color:var(--muted); margin-bottom:5px; text-transform:uppercase; letter-spacing:.04em; font-weight:500; }
 .stat-val { font-size:24px; font-weight:600; line-height:1; }
 .c-danger{color:var(--danger)} .c-warn{color:var(--warn)} .c-accent{color:var(--accent)} .c-ok{color:var(--ok)} .c-admin{color:var(--admin)}
-
-/* Filter row */
 .filter-row { display:flex; align-items:center; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
 .filter-row label { font-size:12px; color:var(--muted); font-weight:500; }
 select.filter-sel { padding:5px 10px; border:1px solid var(--border); border-radius:var(--rs); font-family:inherit; font-size:13px; background:var(--surface); color:var(--text); outline:none; cursor:pointer; }
 select.filter-sel:focus { border-color:var(--admin); }
 .btn-refresh { padding:5px 11px; border:1px solid var(--border); border-radius:var(--rs); background:transparent; font-size:12px; cursor:pointer; font-family:inherit; color:var(--muted); transition:all .12s; }
 .btn-refresh:hover { background:var(--bg); color:var(--text); }
-
-/* Seller cards */
-.cards-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:16px; }
+.cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px; }
 .seller-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; }
 .card-header { padding:14px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); background:var(--bg); }
 .card-seller { font-weight:600; font-size:14px; display:flex; align-items:center; gap:8px; }
 .avatar { width:30px; height:30px; border-radius:50%; background:var(--admin-light); color:var(--admin); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; flex-shrink:0; }
 .card-stats { display:flex; gap:8px; }
 .cs { font-size:11px; font-weight:600; padding:2px 7px; border-radius:99px; }
-.cs-danger{background:var(--danger-light);color:var(--danger)}
-.cs-warn{background:var(--warn-light);color:var(--warn)}
-.cs-ok{background:var(--ok-light);color:var(--ok)}
-
-.card-items { }
+.cs-danger{background:var(--danger-light);color:var(--danger)} .cs-warn{background:var(--warn-light);color:var(--warn)} .cs-ok{background:var(--ok-light);color:var(--ok)}
 .card-item { padding:10px 16px; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; gap:10px; transition:background .1s; }
 .card-item:last-child { border-bottom:none; }
 .card-item:hover { background:#FAFAF8; }
@@ -94,21 +83,12 @@ select.filter-sel:focus { border-color:var(--admin); }
 .item-meta { font-size:11px; color:var(--muted); display:flex; gap:8px; flex-wrap:wrap; margin-top:2px; }
 .item-actions { display:flex; gap:4px; flex-shrink:0; }
 .icon-btn { width:26px; height:26px; display:flex; align-items:center; justify-content:center; border:1px solid var(--border); border-radius:var(--rs); background:transparent; cursor:pointer; font-size:12px; transition:all .12s; color:var(--muted); }
-.icon-btn:hover { background:var(--bg); }
 .ib-edit:hover { color:var(--accent); border-color:var(--accent); }
 .ib-del:hover  { background:var(--danger-light); color:var(--danger); border-color:var(--danger); }
 .card-empty { padding:20px 16px; text-align:center; color:var(--muted); font-size:13px; }
-
-/* badge */
 .badge { font-size:10px; font-weight:600; padding:1px 6px; border-radius:99px; white-space:nowrap; }
-.bd{background:var(--danger-light);color:var(--danger)}
-.bw{background:var(--warn-light);color:var(--warn)}
-.ba{background:var(--accent-light);color:var(--accent)}
-.bs{background:var(--ok-light);color:var(--ok)}
-.bm{background:#F0EEE8;color:var(--muted)}
-
-/* Users table */
-.users-section { }
+.bd{background:var(--danger-light);color:var(--danger)} .bw{background:var(--warn-light);color:var(--warn)}
+.ba{background:var(--accent-light);color:var(--accent)} .bs{background:var(--ok-light);color:var(--ok)} .bm{background:#F0EEE8;color:var(--muted)}
 .section-title { font-size:15px; font-weight:600; margin-bottom:14px; }
 table { width:100%; border-collapse:collapse; background:var(--surface); border-radius:var(--r); overflow:hidden; border:1px solid var(--border); }
 thead th { text-align:left; padding:9px 14px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); background:var(--bg); border-bottom:1px solid var(--border); }
@@ -117,14 +97,11 @@ tbody tr:last-child { border-bottom:none; }
 tbody tr:hover { background:#FAFAF8; }
 td { padding:10px 14px; vertical-align:middle; }
 .role-pill { font-size:11px; font-weight:600; padding:2px 8px; border-radius:4px; }
-.role-admin  { background:var(--admin-light); color:var(--admin); }
-.role-seller { background:#F0EEE8; color:var(--muted); }
+.role-admin{background:var(--admin-light);color:var(--admin)} .role-seller{background:#F0EEE8;color:var(--muted)}
 .tbl-actions { display:flex; gap:6px; }
 .btn-tbl { padding:4px 10px; border:1px solid var(--border); border-radius:var(--rs); background:transparent; font-size:12px; cursor:pointer; font-family:inherit; transition:all .12s; color:var(--muted); }
 .btn-tbl:hover { background:var(--bg); color:var(--text); }
 .btn-tbl.danger:hover { background:var(--danger-light); color:var(--danger); border-color:var(--danger); }
-
-/* Modal */
 .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:200; align-items:center; justify-content:center; }
 .overlay.open { display:flex; }
 .modal { background:var(--surface); border-radius:var(--r); padding:24px; width:100%; max-width:460px; margin:20px; box-shadow:0 8px 32px rgba(0,0,0,.18); max-height:90vh; overflow-y:auto; }
@@ -138,25 +115,16 @@ textarea { resize:vertical; min-height:60px; }
 .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:18px; padding-top:14px; border-top:1px solid var(--border); }
 .btn-ghost { padding:7px 13px; border:1px solid var(--border); border-radius:var(--rs); background:transparent; color:var(--muted); font-size:13px; cursor:pointer; font-family:inherit; }
 .btn-ghost:hover { background:var(--bg); }
-.btn-save { display:flex; align-items:center; gap:5px; padding:7px 14px; border:none; border-radius:var(--rs); background:var(--admin); color:#fff; font-size:13px; font-weight:500; cursor:pointer; font-family:inherit; }
+.btn-save { padding:7px 14px; border:none; border-radius:var(--rs); background:var(--admin); color:#fff; font-size:13px; font-weight:500; cursor:pointer; font-family:inherit; }
 .btn-save:hover { opacity:.88; }
 .btn-save:disabled { opacity:.5; cursor:not-allowed; }
-
-/* Reset pass modal */
 .info-box { background:var(--bg); border:1px solid var(--border); border-radius:var(--rs); padding:10px 12px; font-size:13px; color:var(--muted); margin-bottom:14px; }
 .info-box strong { color:var(--text); }
-
 #toast { position:fixed; bottom:22px; right:22px; background:var(--text); color:#fff; padding:9px 15px; border-radius:var(--rs); font-size:13px; font-weight:500; opacity:0; transform:translateY(8px); transition:all .22s; z-index:999; pointer-events:none; max-width:300px; }
 #toast.show { opacity:1; transform:translateY(0); }
-
 .loading-state,.empty-state { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:44px 24px; text-align:center; color:var(--muted); }
 .empty-icon { font-size:28px; margin-bottom:10px; }
-
-@media(max-width:700px) {
-  .stats-row { grid-template-columns:repeat(2,1fr); }
-  .cards-grid { grid-template-columns:1fr; }
-  .frow { grid-template-columns:1fr; }
-}
+@media(max-width:700px){ .stats-row{grid-template-columns:repeat(2,1fr)} .cards-grid{grid-template-columns:1fr} .frow{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
@@ -167,6 +135,11 @@ textarea { resize:vertical; min-height:60px; }
     <div class="auth-icon">🛡️</div>
     <div class="auth-title">Admin Panel</div>
     <div class="auth-badge">⚙️ Administrator</div>
+    <div class="lang-row">
+      <button class="lang-btn" onclick="setLang('pt')">🇧🇷 PT</button>
+      <button class="lang-btn active" onclick="setLang('en')">🇺🇸 EN</button>
+      <button class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+    </div>
     <input class="auth-input" type="text"     id="admin-name" placeholder="Admin name" autocomplete="username">
     <input class="auth-input" type="password" id="admin-pass" placeholder="Password"   autocomplete="current-password">
     <div class="auth-error" id="auth-error"></div>
@@ -174,22 +147,25 @@ textarea { resize:vertical; min-height:60px; }
   </div>
 </div>
 
-<!-- ══ APP ADMIN ══ -->
+<!-- ══ APP ══ -->
 <div id="app">
   <header>
     <div class="logo"><div class="logo-dot"></div> Follow-up Tracker</div>
     <div class="header-right">
       <span class="admin-chip">⚙️ Admin</span>
       <span style="font-size:13px;color:var(--muted)" id="admin-name-chip"></span>
+      <div class="lang-row" style="margin:0">
+        <button class="lang-btn" onclick="setLang('pt')">PT</button>
+        <button class="lang-btn active" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" onclick="setLang('es')">ES</button>
+      </div>
       <button class="btn-sm" onclick="doLogout()">Sign out</button>
     </div>
   </header>
-
   <div class="tab-bar">
     <button class="tab-btn active" id="tab-overview" onclick="switchTab('overview')">📊 Overview</button>
     <button class="tab-btn"        id="tab-users"    onclick="switchTab('users')">👥 Users</button>
   </div>
-
   <main>
     <div class="sync-row">
       <div class="sync-dot" id="sync-dot"></div>
@@ -197,7 +173,7 @@ textarea { resize:vertical; min-height:60px; }
       <button class="btn-refresh" onclick="loadAll(true)" style="margin-left:8px">↻ Refresh</button>
     </div>
 
-    <!-- ── Overview tab ── -->
+    <!-- Overview -->
     <div id="panel-overview">
       <div class="stats-row">
         <div class="stat-card"><div class="stat-label">Total sellers</div><div class="stat-val c-admin" id="s-sellers">—</div></div>
@@ -205,9 +181,8 @@ textarea { resize:vertical; min-height:60px; }
         <div class="stat-card"><div class="stat-label">Today (team)</div><div class="stat-val c-warn" id="s-today">—</div></div>
         <div class="stat-card"><div class="stat-label">Active total</div><div class="stat-val c-ok" id="s-total">—</div></div>
       </div>
-
       <div class="filter-row">
-        <label>Filter by seller:</label>
+        <label>Seller:</label>
         <select class="filter-sel" id="seller-filter" onchange="renderCards()">
           <option value="all">All sellers</option>
         </select>
@@ -221,39 +196,30 @@ textarea { resize:vertical; min-height:60px; }
           <option value="done">Done</option>
         </select>
       </div>
-
-      <div id="cards-container">
-        <div class="loading-state"><div class="empty-icon">⏳</div>Loading…</div>
-      </div>
+      <div id="cards-container"><div class="loading-state"><div class="empty-icon">⏳</div>Loading…</div></div>
     </div>
 
-    <!-- ── Users tab ── -->
+    <!-- Users -->
     <div id="panel-users" style="display:none">
-      <div class="users-section">
-        <div class="section-title">Team members</div>
-        <div id="users-container">
-          <div class="loading-state"><div class="empty-icon">⏳</div>Loading…</div>
-        </div>
-      </div>
+      <div class="section-title">Team members</div>
+      <div id="users-container"><div class="loading-state"><div class="empty-icon">⏳</div>Loading…</div></div>
     </div>
   </main>
 </div>
 
-<!-- Edit follow-up modal -->
+<!-- Edit modal -->
 <div class="overlay" id="edit-modal">
   <div class="modal">
     <div class="modal-title">Edit follow-up</div>
     <div class="frow">
-      <div class="fg"><label>Contact name *</label><input type="text"  id="e-name"></div>
-      <div class="fg"><label>Company</label>        <input type="text"  id="e-company"></div>
-      <div class="fg"><label>Email</label>          <input type="email" id="e-email"></div>
+      <div class="fg"><label>Contact *</label><input type="text"  id="e-name"></div>
+      <div class="fg"><label>Company</label>  <input type="text"  id="e-company"></div>
+      <div class="fg"><label>Email</label>    <input type="email" id="e-email"></div>
       <div class="fg"><label>Type</label>
-        <select id="e-type">
-          <option>Trial</option><option>Sale</option><option>Demo</option><option>Renewal</option>
-        </select>
+        <select id="e-type"><option>Trial</option><option>Sale</option><option>Demo</option><option>Renewal</option></select>
       </div>
-      <div class="fg"><label>Follow-up date *</label><input type="date" id="e-date"></div>
-      <div class="fg"><label>Est. value</label>      <input type="text" id="e-value"></div>
+      <div class="fg"><label>Date *</label><input type="date" id="e-date"></div>
+      <div class="fg"><label>Value</label>  <input type="text" id="e-value"></div>
       <div class="fg full"><label>Notes</label><textarea id="e-notes"></textarea></div>
     </div>
     <div class="modal-actions">
@@ -280,64 +246,39 @@ textarea { resize:vertical; min-height:60px; }
 
 <div id="toast"></div>
 
+<script src="script.js"></script>
 <script>
-/* ═══════════════════════════════════════════════
-   ⚙️  CONFIGURAÇÃO
-   ═══════════════════════════════════════════════ */
-const API_URL    = 'https://script.google.com/macros/s/AKfycbw4yfpGvGqCX-096yS96Fl7ZWXyKp40nU0AwvAGGear5opQ_yPDWMbnGBxnnvyGKC2h/exec';
-const SECRET_KEY = 'acx_fup_manager';
-/* ═══════════════════════════════════════════════ */
-
+// ── Estado desta página ───────────────────────────────────────
 let adminSeller = localStorage.getItem('admin_seller') || '';
 let allItems    = [];
 let allUsers    = [];
 let editingItem = null;
 let resetTarget = null;
-let currentTab  = 'overview';
 
-async function hashPassword(pass) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pass));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+// applyTranslations é chamado pelo setLang do script.js
+function applyTranslations() {
+  document.querySelectorAll('[data-i]').forEach(el => { const v=T[lang][el.dataset.i]; if(v) el.textContent=v; });
 }
 
-async function api(action, payload={}) {
-  setSyncState('busy','Syncing…');
-  try {
-    const body = JSON.stringify({ action, key: SECRET_KEY, adminSeller, ...payload });
-    const url  = API_URL + '?data=' + encodeURIComponent(body);
-    const res  = await fetch(url);
-    const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'API error');
-    return data;
-  } catch(e) {
-    setSyncState('err','Sync error');
-    if (e.message==='Failed to fetch') throw new Error('connection');
-    throw e;
-  }
-}
-
-/* ── Login ── */
+// ── Login ─────────────────────────────────────────────────────
 async function doLogin() {
-  const name = document.getElementById('admin-name').value.trim();
-  const pass = document.getElementById('admin-pass').value;
+  const name  = document.getElementById('admin-name').value.trim();
+  const pass  = document.getElementById('admin-pass').value;
   const errEl = document.getElementById('auth-error');
   errEl.textContent = '';
-  if (!name || !pass) { errEl.textContent = 'Please fill in all fields.'; return; }
-
+  if (!name||!pass) { errEl.textContent='Please fill in all fields.'; return; }
   const btn = document.getElementById('btn-login');
-  btn.disabled = true; btn.textContent = '…';
+  btn.disabled=true; btn.textContent='…';
   try {
     const hash = await hashPassword(pass);
-    const body = JSON.stringify({ action:'login', key:SECRET_KEY, seller:name, passwordHash:hash });
-    const res  = await fetch(API_URL + '?data=' + encodeURIComponent(body));
-    const data = await res.json();
+    const data = await jsonp(API_URL + '?data=' + encodeURIComponent(JSON.stringify({ action:'login', key:SECRET_KEY, seller:name, passwordHash:hash })));
     if (!data.ok) throw new Error(data.error);
     if (data.role !== 'admin') throw new Error('not_admin');
     adminSeller = data.seller;
     localStorage.setItem('admin_seller', adminSeller);
     enterApp();
   } catch(e) {
-    const msgs = { not_found:'User not found.', wrong_password:'Incorrect password.', not_admin:'This account does not have admin access.', connection:'Connection error. Check API_URL.' };
+    const msgs = { not_found:'User not found.', wrong_password:'Incorrect password.', not_admin:'This account has no admin access.', api:'Connection error.' };
     errEl.textContent = msgs[e.message] || e.message;
   } finally { btn.disabled=false; btn.textContent='Sign in as Admin'; }
 }
@@ -346,7 +287,6 @@ function enterApp() {
   document.getElementById('auth-screen').style.display='none';
   document.getElementById('app').style.display='block';
   document.getElementById('admin-name-chip').textContent = adminSeller;
-  document.getElementById('admin-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
   loadAll();
 }
 
@@ -358,20 +298,19 @@ function doLogout() {
   document.getElementById('admin-pass').value='';
 }
 
-/* ── Tabs ── */
+// ── Tabs ──────────────────────────────────────────────────────
 function switchTab(tab) {
-  currentTab = tab;
   document.getElementById('tab-overview').classList.toggle('active', tab==='overview');
   document.getElementById('tab-users').classList.toggle('active',    tab==='users');
   document.getElementById('panel-overview').style.display = tab==='overview'?'':'none';
   document.getElementById('panel-users').style.display    = tab==='users'?'':'none';
-  if (tab==='users' && allUsers.length===0) loadUsers();
+  if (tab==='users' && !allUsers.length) loadUsers();
 }
 
-/* ── Load ── */
+// ── Carregar ─────────────────────────────────────────────────
 async function loadAll(manual=false) {
   try {
-    const data = await api('listAll');
+    const data = await api('listAll', { adminSeller });
     allItems = data.items || [];
     setSyncState('ok','Synced');
     updateSellerFilter();
@@ -382,26 +321,20 @@ async function loadAll(manual=false) {
 
 async function loadUsers() {
   try {
-    const data = await api('listUsers');
+    const data = await api('listUsers', { adminSeller });
     allUsers = data.users || [];
     setSyncState('ok','Synced');
     renderUsers();
   } catch(e) { showToast('❌ ' + e.message); }
 }
 
-/* ── Stats & filter ── */
-function today() { return new Date().toISOString().split('T')[0]; }
-function addDays(ds,n){ const d=new Date(ds+'T00:00:00'); d.setDate(d.getDate()+n); return d.toISOString().split('T')[0]; }
-function fmtDate(ds){ if(!ds) return '—'; const[y,m,d]=ds.split('-'); return `${d}/${m}/${y}`; }
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
+// ── Stats ─────────────────────────────────────────────────────
 function updateSellerFilter() {
   const sellers = [...new Set(allItems.map(i=>i.seller).filter(Boolean))].sort();
   const sel = document.getElementById('seller-filter');
   const cur = sel.value;
   sel.innerHTML = '<option value="all">All sellers</option>' + sellers.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
   if (sellers.includes(cur)) sel.value = cur;
-
   const tn = today();
   const active = allItems.filter(i=>!i.done);
   document.getElementById('s-sellers').textContent = sellers.length;
@@ -410,130 +343,90 @@ function updateSellerFilter() {
   document.getElementById('s-total').textContent   = active.length;
 }
 
-/* ── Render cards ── */
+// ── Cards por vendedor ────────────────────────────────────────
 function renderCards() {
   const tn           = today();
   const sellerFilter = document.getElementById('seller-filter').value;
   const statusFilter = document.getElementById('status-filter').value;
-
   let filtered = allItems.filter(i => {
-    if (sellerFilter !== 'all' && i.seller !== sellerFilter) return false;
-    if (statusFilter === 'overdue') return !i.done && i.date < tn;
-    if (statusFilter === 'today')   return !i.done && i.date === tn;
-    if (statusFilter === 'soon')    return !i.done && i.date > tn && i.date <= addDays(tn,7);
-    if (statusFilter === 'pending') return !i.done;
-    if (statusFilter === 'done')    return i.done;
+    if (sellerFilter!=='all' && i.seller!==sellerFilter) return false;
+    if (statusFilter==='overdue') return !i.done && i.date<tn;
+    if (statusFilter==='today')   return !i.done && i.date===tn;
+    if (statusFilter==='soon')    return !i.done && i.date>tn && i.date<=addDays(tn,7);
+    if (statusFilter==='pending') return !i.done;
+    if (statusFilter==='done')    return i.done;
     return true;
   });
-
   const bySeller = {};
-  filtered.forEach(item => {
-    const s = item.seller || 'Unknown';
-    if (!bySeller[s]) bySeller[s] = [];
-    bySeller[s].push(item);
-  });
-
+  filtered.forEach(item => { const s=item.seller||'Unknown'; if(!bySeller[s]) bySeller[s]=[]; bySeller[s].push(item); });
   const sellers = Object.keys(bySeller).sort();
   const container = document.getElementById('cards-container');
-
   if (!sellers.length) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div>No follow-ups found for this filter.</div>`;
+    container.innerHTML=`<div class="empty-state"><div class="empty-icon">📋</div>No follow-ups found.</div>`;
     return;
   }
-
-  const typeClass = {Trial:'tp-trial',Sale:'tp-sale',Venda:'tp-sale',Demo:'tp-demo',Renewal:'tp-renew'};
-
   const cards = sellers.map(seller => {
-    const items = bySeller[seller].sort((a,b)=>{
-      if(a.done!==b.done) return a.done?1:-1;
-      return a.date.localeCompare(b.date);
-    });
-    const active  = items.filter(i=>!i.done);
+    const sitems = bySeller[seller].sort((a,b)=>{ if(a.done!==b.done) return a.done?1:-1; return a.date.localeCompare(b.date); });
+    const active  = sitems.filter(i=>!i.done);
     const overdue = active.filter(i=>i.date<tn).length;
     const tdCount = active.filter(i=>i.date===tn).length;
-
     const initials = seller.split(' ').map(w=>w[0]||'').slice(0,2).join('').toUpperCase();
-
-    const itemRows = items.map(item => {
-      const cls  = item.date<tn?'overdue':item.date===tn?'today':'';
-      const dot  = item.done?'dot-muted':cls==='overdue'?'dot-danger':cls==='today'?'dot-warn':'dot-ok';
-      const badge = item.done
-        ? `<span class="badge bs">Done</span>`
-        : cls==='overdue' ? `<span class="badge bd">Overdue</span>`
-        : cls==='today'   ? `<span class="badge bw">Today</span>`
-        : item.date<=addDays(tn,7) ? `<span class="badge ba">Soon</span>`
-        : `<span class="badge bm">Scheduled</span>`;
-
+    const rows = sitems.map(item => {
+      const cls = item.date<tn?'overdue':item.date===tn?'today':'';
+      const dot = item.done?'dot-muted':cls==='overdue'?'dot-danger':cls==='today'?'dot-warn':'dot-ok';
+      const badge = item.done?`<span class="badge bs">Done</span>`
+        :cls==='overdue'?`<span class="badge bd">Overdue</span>`
+        :cls==='today'?`<span class="badge bw">Today</span>`
+        :item.date<=addDays(tn,7)?`<span class="badge ba">Soon</span>`
+        :`<span class="badge bm">Scheduled</span>`;
       return `<div class="card-item" style="${item.done?'opacity:.5':''}">
         <div class="item-dot ${dot}"></div>
         <div class="item-info">
           <div class="item-name">${esc(item.name)}${item.company?` <span style="font-weight:400;color:var(--muted)">· ${esc(item.company)}</span>`:''}</div>
-          <div class="item-meta">
-            <span>${fmtDate(item.date)}</span>
-            <span>${esc(item.type)}</span>
-            ${item.value?`<span>${ esc(item.value)}</span>`:''}
-            ${badge}
-          </div>
+          <div class="item-meta"><span>${fmtDate(item.date)}</span><span>${esc(item.type)}</span>${item.value?`<span>${esc(item.value)}</span>`:''} ${badge}</div>
         </div>
         <div class="item-actions">
-          <button class="icon-btn ib-edit" title="Edit"   onclick="openEditModal(allItems.find(i=>i.id==='${item.id}'))">✎</button>
-          <button class="icon-btn ib-del"  title="Delete" onclick="adminDelete('${item.id}')">✕</button>
+          <button class="icon-btn ib-edit" onclick="openEditModal(allItems.find(i=>i.id==='${item.id}'))">✎</button>
+          <button class="icon-btn ib-del"  onclick="adminDelete('${item.id}')">✕</button>
         </div>
       </div>`;
     }).join('');
-
     return `<div class="seller-card">
       <div class="card-header">
-        <div class="card-seller">
-          <div class="avatar">${initials}</div>
-          ${esc(seller)}
-          <span style="font-size:12px;color:var(--muted);font-weight:400">(${active.length} active)</span>
-        </div>
+        <div class="card-seller"><div class="avatar">${initials}</div>${esc(seller)}<span style="font-size:12px;color:var(--muted);font-weight:400">(${active.length} active)</span></div>
         <div class="card-stats">
-          ${overdue  ? `<span class="cs cs-danger">${overdue} overdue</span>`:''}
-          ${tdCount  ? `<span class="cs cs-warn">${tdCount} today</span>`:''}
-          ${!overdue&&!tdCount ? `<span class="cs cs-ok">✓ On track</span>`:''}
+          ${overdue?`<span class="cs cs-danger">${overdue} overdue</span>`:''}
+          ${tdCount?`<span class="cs cs-warn">${tdCount} today</span>`:''}
+          ${!overdue&&!tdCount?`<span class="cs cs-ok">✓ On track</span>`:''}
         </div>
       </div>
-      <div class="card-items">
-        ${itemRows || `<div class="card-empty">No follow-ups</div>`}
-      </div>
+      <div class="card-items">${rows||`<div class="card-empty">No follow-ups</div>`}</div>
     </div>`;
   }).join('');
-
   container.innerHTML = `<div class="cards-grid">${cards}</div>`;
 }
 
-/* ── Render users ── */
+// ── Users ─────────────────────────────────────────────────────
 function renderUsers() {
   const container = document.getElementById('users-container');
-  if (!allUsers.length) {
-    container.innerHTML = `<div class="empty-state"><div class="empty-icon">👥</div>No users found.</div>`;
-    return;
-  }
+  if (!allUsers.length) { container.innerHTML=`<div class="empty-state"><div class="empty-icon">👥</div>No users found.</div>`; return; }
   const rows = allUsers.map(u => {
-    const isAdmin = u.role === 'admin';
-    const date = u.createdAt ? u.createdAt.toString().slice(0,10) : '—';
+    const isAdmin = u.role==='admin';
     return `<tr>
       <td style="font-weight:500">${esc(u.seller)}</td>
       <td><span class="role-pill ${isAdmin?'role-admin':'role-seller'}">${isAdmin?'Admin':'Seller'}</span></td>
-      <td style="color:var(--muted);font-size:13px">${date}</td>
-      <td>
-        <div class="tbl-actions">
-          ${!isAdmin ? `<button class="btn-tbl" onclick="openResetModal('${esc(u.seller)}')">🔑 Reset password</button>` : ''}
-          ${!isAdmin ? `<button class="btn-tbl danger" onclick="removeUser('${esc(u.seller)}')">✕ Remove</button>` : ''}
-          ${isAdmin  ? `<span style="font-size:12px;color:var(--muted)">—</span>` : ''}
-        </div>
-      </td>
+      <td style="color:var(--muted);font-size:13px">${u.createdAt?u.createdAt.toString().slice(0,10):'—'}</td>
+      <td><div class="tbl-actions">
+        ${!isAdmin?`<button class="btn-tbl" onclick="openResetModal('${esc(u.seller)}')">🔑 Reset</button>`:''}
+        ${!isAdmin?`<button class="btn-tbl danger" onclick="removeUser('${esc(u.seller)}')">✕ Remove</button>`:''}
+        ${isAdmin?`<span style="font-size:12px;color:var(--muted)">—</span>`:''}
+      </div></td>
     </tr>`;
   }).join('');
-  container.innerHTML = `<table>
-    <thead><tr><th>Name</th><th>Role</th><th>Created</th><th>Actions</th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table>`;
+  container.innerHTML=`<table><thead><tr><th>Name</th><th>Role</th><th>Created</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
-/* ── Edit follow-up ── */
+// ── Edit follow-up ────────────────────────────────────────────
 function openEditModal(item) {
   editingItem = item;
   document.getElementById('e-name').value    = item?.name    || '';
@@ -546,20 +439,20 @@ function openEditModal(item) {
   document.getElementById('edit-modal').classList.add('open');
   setTimeout(()=>document.getElementById('e-name').focus(),60);
 }
-function closeEditModal(){ document.getElementById('edit-modal').classList.remove('open'); editingItem=null; }
+function closeEditModal() { document.getElementById('edit-modal').classList.remove('open'); editingItem=null; }
 
 async function saveEdit() {
-  const name = document.getElementById('e-name').value.trim();
-  const date = document.getElementById('e-date').value;
-  if (!name) { showToast('⚠️ Name is required.'); return; }
-  if (!date) { showToast('⚠️ Date is required.'); return; }
-  const btn = document.getElementById('edit-save-btn');
+  const name=document.getElementById('e-name').value.trim();
+  const date=document.getElementById('e-date').value;
+  if (!name) { showToast('⚠️ Name required.'); return; }
+  if (!date) { showToast('⚠️ Date required.'); return; }
+  const btn=document.getElementById('edit-save-btn');
   btn.disabled=true; btn.textContent='Saving…';
-  const item = { ...editingItem, name, company:document.getElementById('e-company').value.trim(),
+  const item={...editingItem, name, company:document.getElementById('e-company').value.trim(),
     email:document.getElementById('e-email').value.trim(), type:document.getElementById('e-type').value,
-    date, value:document.getElementById('e-value').value.trim(), notes:document.getElementById('e-notes').value.trim() };
+    date, value:document.getElementById('e-value').value.trim(), notes:document.getElementById('e-notes').value.trim()};
   try {
-    await api('adminUpdate', { item });
+    await api('adminUpdate', { adminSeller, item });
     showToast('✏️ Updated!'); closeEditModal(); await loadAll();
   } catch(e) { showToast('❌ Error saving.'); }
   finally { btn.disabled=false; btn.textContent='Save changes'; }
@@ -567,64 +460,56 @@ async function saveEdit() {
 
 async function adminDelete(id) {
   if (!confirm('Remove this follow-up?')) return;
-  try { await api('adminDelete',{id}); showToast('🗑️ Removed!'); await loadAll(); }
-  catch(e) { showToast('❌ Error removing.'); }
+  try { await api('adminDelete', { adminSeller, id }); showToast('🗑️ Removed!'); await loadAll(); }
+  catch(e) { showToast('❌ Error.'); }
 }
 
-/* ── Reset password ── */
+// ── Reset password ────────────────────────────────────────────
 function openResetModal(seller) {
-  resetTarget = seller;
-  document.getElementById('reset-seller-name').textContent = seller;
-  document.getElementById('reset-pass1').value = '';
-  document.getElementById('reset-pass2').value = '';
-  document.getElementById('reset-error').textContent = '';
+  resetTarget=seller;
+  document.getElementById('reset-seller-name').textContent=seller;
+  document.getElementById('reset-pass1').value='';
+  document.getElementById('reset-pass2').value='';
+  document.getElementById('reset-error').textContent='';
   document.getElementById('reset-modal').classList.add('open');
   setTimeout(()=>document.getElementById('reset-pass1').focus(),60);
 }
-function closeResetModal(){ document.getElementById('reset-modal').classList.remove('open'); resetTarget=null; }
+function closeResetModal() { document.getElementById('reset-modal').classList.remove('open'); resetTarget=null; }
 
 async function saveReset() {
-  const p1 = document.getElementById('reset-pass1').value;
-  const p2 = document.getElementById('reset-pass2').value;
-  const errEl = document.getElementById('reset-error');
+  const p1=document.getElementById('reset-pass1').value;
+  const p2=document.getElementById('reset-pass2').value;
+  const errEl=document.getElementById('reset-error');
   errEl.textContent='';
-  if (!p1||!p2)       { errEl.textContent='Fill in both fields.'; return; }
-  if (p1.length < 4)  { errEl.textContent='Minimum 4 characters.'; return; }
-  if (p1 !== p2)      { errEl.textContent='Passwords do not match.'; return; }
-  const btn = document.getElementById('reset-save-btn');
+  if (!p1||!p2)      { errEl.textContent='Fill in both fields.'; return; }
+  if (p1.length < 4) { errEl.textContent='Minimum 4 characters.'; return; }
+  if (p1 !== p2)     { errEl.textContent='Passwords do not match.'; return; }
+  const btn=document.getElementById('reset-save-btn');
   btn.disabled=true; btn.textContent='Saving…';
   try {
-    const hash = await hashPassword(p1);
-    await api('resetPassword', { seller: resetTarget, passwordHash: hash });
+    const hash=await hashPassword(p1);
+    await api('resetPassword', { adminSeller, seller:resetTarget, passwordHash:hash });
     showToast('🔑 Password reset!'); closeResetModal();
-  } catch(e) { errEl.textContent = '❌ Error: ' + e.message; }
+  } catch(e) { errEl.textContent='❌ Error: '+e.message; }
   finally { btn.disabled=false; btn.textContent='Reset password'; }
 }
 
-/* ── Remove user ── */
 async function removeUser(seller) {
-  if (!confirm(`Remove user "${seller}" and all their follow-ups? This cannot be undone.`)) return;
+  if (!confirm(`Remove "${seller}" and all their follow-ups? Cannot be undone.`)) return;
   try {
-    await api('removeUser', { seller });
-    showToast('🗑️ User removed!');
-    await loadAll(); await loadUsers();
-  } catch(e) { showToast('❌ Error removing user.'); }
+    await api('removeUser', { adminSeller, seller });
+    showToast('🗑️ User removed!'); await loadAll(); await loadUsers();
+  } catch(e) { showToast('❌ Error.'); }
 }
 
-/* ── Utils ── */
-function setSyncState(st,label){
-  const d=document.getElementById('sync-dot');
-  d.className='sync-dot'+(st==='busy'?' busy':st==='err'?' err':'');
-  document.getElementById('sync-label').textContent=label;
-}
-function showToast(msg){ const e=document.getElementById('toast'); e.textContent=msg; e.classList.add('show'); setTimeout(()=>e.classList.remove('show'),2800); }
+// ── Eventos ───────────────────────────────────────────────────
+document.getElementById('edit-modal').addEventListener('click',  e=>{ if(e.target===document.getElementById('edit-modal'))  closeEditModal(); });
+document.getElementById('reset-modal').addEventListener('click', e=>{ if(e.target===document.getElementById('reset-modal')) closeResetModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeEditModal(); closeResetModal(); } });
+document.getElementById('admin-pass').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
 
-document.getElementById('edit-modal').addEventListener('click',e=>{ if(e.target===document.getElementById('edit-modal')) closeEditModal(); });
-document.getElementById('reset-modal').addEventListener('click',e=>{ if(e.target===document.getElementById('reset-modal')) closeResetModal(); });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeEditModal(); closeResetModal(); } });
-document.getElementById('admin-pass').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
-
-/* ── Init ── */
+// ── Init ──────────────────────────────────────────────────────
+setLang(lang);
 if (adminSeller) enterApp();
 </script>
 </body>
