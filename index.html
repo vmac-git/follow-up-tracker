@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Follow-up Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" type="image/x-icon" href="https://www.acceleronix.io/wp-content/uploads/2025/08/acc-favicon.ico" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -118,19 +119,23 @@ textarea{resize:vertical;min-height:66px}
   td::before{content:attr(data-label);font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;display:block}
   .search-inp{width:130px}
 }
+
 #notif-banner{display:none;align-items:flex-start;gap:12px;background:#FFF7ED;border:1px solid #FED7AA;border-radius:var(--r);padding:14px 16px;margin-bottom:16px}
-#notif-banner .nb-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+#notif-banner .nb-icon{font-size:18px;flex-shrink:0;margin-top:2px}
 #notif-banner .nb-body{flex:1}
-#notif-banner .nb-title{font-weight:600;font-size:13px;color:#92400E;margin-bottom:2px}
+#notif-banner .nb-title{font-weight:600;font-size:13px;color:#92400E;margin-bottom:3px}
 #notif-banner .nb-desc{font-size:12px;color:#B45309;line-height:1.5}
 #notif-banner .nb-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
 #notif-banner .nb-btn{padding:5px 12px;border:none;border-radius:var(--rs);background:#F97316;color:#fff;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;transition:opacity .15s}
 #notif-banner .nb-btn:hover{opacity:.88}
 #notif-banner .nb-dismiss{padding:5px 12px;border:1px solid #FED7AA;border-radius:var(--rs);background:transparent;color:#B45309;font-size:12px;cursor:pointer;font-family:inherit}
 #notif-banner .nb-dismiss:hover{background:#FEF3C7}
-#notif-banner.granted{background:#F0FDF4;border-color:#BBF7D0}
-#notif-banner.granted .nb-title{color:#166534}
-#notif-banner.granted .nb-desc{color:#15803D}
+#notif-banner.nb-granted{background:#F0FDF4;border-color:#BBF7D0}
+#notif-banner.nb-granted .nb-title{color:#166534}
+#notif-banner.nb-granted .nb-desc{color:#15803D}
+#notif-banner.nb-blocked{background:#FEF2F2;border-color:#FECACA}
+#notif-banner.nb-blocked .nb-title{color:#991B1B}
+#notif-banner.nb-blocked .nb-desc{color:#B91C1C}
 </style>
 </head>
 <body>
@@ -142,9 +147,9 @@ textarea{resize:vertical;min-height:66px}
     <div class="auth-title">Follow-up Tracker</div>
     <div class="auth-sub" id="auth-sub"></div>
     <div class="lang-row">
-      <button class="lang-btn" onclick="setLang('pt')">🇧🇷 PT</button>
-      <button class="lang-btn active" onclick="setLang('en')">🇺🇸 EN</button>
-      <button class="lang-btn" onclick="setLang('es')">🇪🇸 ES</button>
+      <button class="lang-btn" data-lang="pt" onclick="setLang('pt')">🇧🇷 PT</button>
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">🇺🇸 EN</button>
+      <button class="lang-btn" data-lang="es" onclick="setLang('es')">🇪🇸 ES</button>
     </div>
     <div class="auth-tabs">
       <button class="auth-tab active" id="tab-login"    onclick="switchTab('login')"    data-i="tab_login">Sign in</button>
@@ -174,9 +179,9 @@ textarea{resize:vertical;min-height:66px}
     <div class="header-right">
       <span class="seller-chip" id="seller-chip"></span>
       <div class="lang-row" style="margin:0">
-        <button class="lang-btn" onclick="setLang('pt')">PT</button>
-        <button class="lang-btn active" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" onclick="setLang('es')">ES</button>
+        <button class="lang-btn" data-lang="pt" onclick="setLang('pt')">PT</button>
+        <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" data-lang="es" onclick="setLang('es')">ES</button>
       </div>
       <button class="btn-sm"     onclick="doLogout()"  data-i="btn_logout">Sign out</button>
       <button class="btn-primary" onclick="openModal()" id="btn-new">+ New</button>
@@ -322,7 +327,7 @@ function enterApp(name) {
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   document.getElementById('seller-chip').textContent = '👤 ' + seller;
-  if (API_URL === 'https://script.google.com/macros/s/AKfycbzWUmDm_sHxO9pPF3t2yN8zgSD4h3uNuUD03LG935IYIs8hMbAFE_KeNSjgPWllm3Bq/exec') {
+  if (!API_URL || API_URL.includes('COLE_A_URL')) {
     const b = document.getElementById('cfg-banner');
     b.style.display='block'; b.innerHTML='⚠️ ' + t('cfg_warn');
   }
@@ -344,7 +349,7 @@ function doLogout() {
 
 // ── Carregar dados ────────────────────────────────────────────
 async function loadItems(manual=false) {
-  if (API_URL === 'https://script.google.com/macros/s/AKfycbzWUmDm_sHxO9pPF3t2yN8zgSD4h3uNuUD03LG935IYIs8hMbAFE_KeNSjgPWllm3Bq/exec') {
+  if (!API_URL || API_URL.includes('COLE_A_URL')) {
     setSyncState('err', t('sync_err'));
     document.getElementById('table-wrap').innerHTML =
       `<div class="empty-state"><div class="empty-icon">⚙️</div><div class="empty-title">${t('cfg_warn')}</div></div>`;
@@ -468,39 +473,35 @@ function render() {
 
 // ── Banner de notificações ────────────────────────────────────
 function updateNotifBanner() {
-  const banner = document.getElementById('notif-banner');
-  const perm   = ('Notification' in window) ? Notification.permission : 'unsupported';
+  if (!('Notification' in window)) return;
+  const banner    = document.getElementById('notif-banner');
+  const perm      = Notification.permission;
   const dismissed = localStorage.getItem('notif_dismissed');
 
-  if (perm === 'unsupported') { banner.style.display = 'none'; return; }
-
+  // granted
   if (perm === 'granted') {
-    if (dismissed === 'granted') { banner.style.display = 'none'; return; }
-    banner.style.display = 'flex';
-    banner.className = 'granted';
+    if (dismissed === 'granted') { banner.style.display='none'; return; }
+    banner.style.display='flex'; banner.className='nb-granted';
     document.getElementById('nb-title').textContent   = t('notif_granted_title');
     document.getElementById('nb-desc').textContent    = t('notif_granted_desc');
-    document.getElementById('nb-allow').style.display   = 'none';
-    document.getElementById('nb-dismiss').textContent = '✕';
+    document.getElementById('nb-allow').style.display = 'none';
+    document.getElementById('nb-dismiss').textContent = '✕ OK';
     return;
   }
-
+  // denied
   if (perm === 'denied') {
-    if (dismissed === 'denied') { banner.style.display = 'none'; return; }
-    banner.style.display = 'flex';
-    banner.className = '';
-    document.getElementById('nb-title').textContent   = '⚠️ ' + t('notif_banner_title').replace('🔔 ','');
+    if (dismissed === 'denied') { banner.style.display='none'; return; }
+    banner.style.display='flex'; banner.className='nb-blocked';
+    document.getElementById('nb-title').textContent   = '⚠️ ' + t('notif_banner_title');
     document.getElementById('nb-desc').textContent    = t('notif_denied');
-    document.getElementById('nb-allow').style.display   = 'none';
-    document.getElementById('nb-dismiss').textContent = '✕';
+    document.getElementById('nb-allow').style.display = 'none';
+    document.getElementById('nb-dismiss').textContent = '✕ ' + t('notif_dismiss');
     return;
   }
-
-  // default — ainda não pediu permissão
-  if (dismissed === 'later') { banner.style.display = 'none'; return; }
-  banner.style.display = 'flex';
-  banner.className = '';
-  document.getElementById('nb-title').textContent      = t('notif_banner_title');
+  // default — not asked yet
+  if (dismissed === 'later') { banner.style.display='none'; return; }
+  banner.style.display='flex'; banner.className='';
+  document.getElementById('nb-title').textContent      = '🔔 ' + t('notif_banner_title');
   document.getElementById('nb-desc').textContent       = t('notif_banner_desc');
   document.getElementById('nb-allow').style.display    = '';
   document.getElementById('nb-allow').textContent      = t('notif_allow');
